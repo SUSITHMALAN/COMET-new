@@ -39,19 +39,15 @@ export default function Navbar() {
       <div className="container" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {/* Logo */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
-          <span style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '28px',
-            letterSpacing: '0.12em',
-            color: 'var(--white)',
-          }}>COMET</span>
-          <span style={{
-            width: 6, height: 6,
-            borderRadius: '50%',
-            background: 'var(--accent)',
-            marginLeft: 3,
-            marginBottom: 16,
-          }} />
+          <img
+            src="/Comet white.png"
+            alt="COMET"
+            style={{
+              height: '100px',
+              width: 'auto',
+              display: 'block'
+            }}
+          />
         </Link>
 
         {/* Desktop Nav */}

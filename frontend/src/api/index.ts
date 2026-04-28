@@ -53,6 +53,9 @@ export const categoriesApi = {
   getAll: () => api.get('/products/categories'),
   create: (data: { name: string; slug: string; description?: string }) =>
     api.post('/products/categories', data),
+  update: (id: number, data: { name?: string; slug?: string; description?: string }) =>
+    api.put(`/products/categories/${id}`, data),
+  delete: (id: number) => api.delete(`/products/categories/${id}`),
 };
 
 // Stock

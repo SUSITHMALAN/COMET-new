@@ -4,7 +4,7 @@ from typing import Optional, List
 import json, os, uuid
 from app.database import get_db
 from app.models.models import Product, Category, Stock
-from app.schemas.schemas import ProductCreate, ProductUpdate, ProductResponse, CategoryCreate, CategoryResponse
+from app.schemas.schemas import ProductCreate, ProductUpdate, ProductResponse, CategoryCreate, CategoryUpdate, CategoryResponse
 from app.utils.auth import get_admin_user, get_current_user
 from app.models.models import User
 from PIL import Image
@@ -27,6 +27,35 @@ def create_category(data: CategoryCreate, db: Session = Depends(get_db), admin: 
     db.commit()
     db.refresh(cat)
     return cat
+
+@router.put("/categories/{category_id}", response_model=CategoryResponse)
+def update_category(category_id: int, data: CategoryUpdate, db: Session = Depends(get_db), admin: User = Depends(get_admin_user)):
+    cat = db.query(Category).filter(Category.id == category_id).first()
+    if not cat:
+        raise HTTPException(status_code=404, detail="Category not found")
+    
+    update_data = data.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(cat, key, value)
+    
+    db.commit()
+    db.refresh(cat)
+    return cat
+
+@router.delete("/categories/{category_id}")
+def delete_category(category_id: int, db: Session = Depends(get_db), admin: User = Depends(get_admin_user)):
+    cat = db.query(Category).filter(Category.id == category_id).first()
+    if not cat:
+        raise HTTPException(status_code=404, detail="Category not found")
+    
+    # Check if category has products
+    has_products = db.query(Product).filter(Product.category_id == category_id).first()
+    if has_products:
+        raise HTTPException(status_code=400, detail="Cannot delete category with associated products")
+
+    db.delete(cat)
+    db.commit()
+    return {"message": "Category deleted"}
 
 # Products
 @router.get("", response_model=List[ProductResponse])

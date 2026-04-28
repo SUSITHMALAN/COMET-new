@@ -18,6 +18,7 @@ import SignupPage from './pages/SignupPage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import AdminProductsPage from './pages/AdminProductsPage';
+import AdminCategoriesPage from './pages/AdminCategoriesPage';
 import AdminOrdersPage from './pages/AdminOrdersPage';
 import AdminStockPage from './pages/AdminStockPage';
 import AdminUsersPage from './pages/AdminUsersPage';
@@ -71,6 +72,7 @@ export default function App() {
         >
           <Route index element={<AdminDashboardPage />} />
           <Route path="products" element={<AdminProductsPage />} />
+          <Route path="categories" element={<AdminCategoriesPage />} />
           <Route path="orders" element={<AdminOrdersPage />} />
           <Route path="stock" element={<AdminStockPage />} />
           <Route path="users" element={<AdminUsersPage />} />
