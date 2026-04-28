@@ -147,8 +147,8 @@ export default function AdminProductsPage() {
                     </td>
                     <td style={{ padding: '14px 16px' }}>
                       <div style={{ display: 'flex', gap: 6 }}>
-                        {p.is_featured && <Star size={14} color="#f59e0b" fill="#f59e0b" title="Featured" />}
-                        {p.is_new && <Sparkles size={14} color="#3b82f6" fill="#3b82f6" title="New" />}
+                        {p.is_featured && <span title="Featured"><Star size={14} color="#f59e0b" fill="#f59e0b" /></span>}
+                        {p.is_new && <span title="New"><Sparkles size={14} color="#3b82f6" fill="#3b82f6" /></span>}
                       </div>
                     </td>
                     <td style={{ padding: '14px 16px' }}>
