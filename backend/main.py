@@ -15,17 +15,24 @@ def init_db():
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
-        # Create admin user
-        admin = db.query(User).filter(User.email == os.getenv("ADMIN_EMAIL")).first()
+        # Create or update admin user
+        admin_email = os.getenv("ADMIN_EMAIL", "admin@comet.com")
+        admin_password = os.getenv("ADMIN_PASSWORD", "admin123")
+        
+        admin = db.query(User).filter(User.email == admin_email).first()
         if not admin:
+            print(f"Creating admin user: {admin_email}")
             admin = User(
-                email=os.getenv("ADMIN_EMAIL", "admin@comet.com"),
+                email=admin_email,
                 name="Admin",
-                hashed_password=get_password_hash(os.getenv("ADMIN_PASSWORD", "admin123")),
+                hashed_password=get_password_hash(admin_password),
                 role="admin",
                 is_active=True
             )
             db.add(admin)
+        else:
+            print(f"Updating admin password for: {admin_email}")
+            admin.hashed_password = get_password_hash(admin_password)
         
         # Seed categories
         if db.query(Category).count() == 0:
