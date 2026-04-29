@@ -5,6 +5,7 @@ import { productsApi } from '../api';
 import { Product } from '../types';
 import { useCartStore } from '../store';
 import { showToast } from '../hooks/useToast';
+import { getImageUrl } from '../api';
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -85,7 +86,7 @@ export default function ProductDetailPage() {
               marginBottom: 12,
             }}>
               {images.length > 0 ? (
-                <img src={images[imgIndex]} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src={getImageUrl(images[imgIndex])} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #f5f5f5, #e5e5e5)' }}>
                   <span style={{ fontFamily: 'var(--font-display)', fontSize: '72px', color: 'var(--grey-300)' }}>COMET</span>
@@ -113,7 +114,7 @@ export default function ProductDetailPage() {
                       border: i === imgIndex ? '2px solid var(--black)' : '2px solid transparent',
                       cursor: 'pointer', background: 'none', padding: 0,
                     }}>
-                    <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={getImageUrl(img)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </button>
                 ))}
               </div>

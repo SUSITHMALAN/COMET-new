@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, X, Upload, Star, Sparkles } from 'lucide-react';
-import { productsApi, categoriesApi } from '../api';
+import { productsApi, categoriesApi, getImageUrl } from '../api';
 import { Product, Category } from '../types';
 import { showToast } from '../hooks/useToast';
 
@@ -123,7 +123,7 @@ export default function AdminProductsPage() {
                     <td style={{ padding: '14px 16px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                         <div style={{ width: 48, height: 60, borderRadius: 'var(--radius)', overflow: 'hidden', background: 'var(--grey-100)', flexShrink: 0 }}>
-                          {imgs[0] ? <img src={imgs[0]} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
+                          {imgs[0] ? <img src={getImageUrl(imgs[0])} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
                         </div>
                         <div>
                           <p style={{ fontWeight: 600, fontSize: '14px' }}>{p.name}</p>

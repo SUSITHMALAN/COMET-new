@@ -4,6 +4,7 @@ import { ShoppingBag } from 'lucide-react';
 import { Product } from '../../types';
 import { useCartStore } from '../../store';
 import { showToast } from '../../hooks/useToast';
+import { getImageUrl } from '../../api';
 
 interface Props {
   product: Product;
@@ -58,7 +59,7 @@ export default function ProductCard({ product }: Props) {
         }}>
           {images.length > 0 ? (
             <img
-              src={images[0]}
+              src={getImageUrl(images[0])}
               alt={product.name}
               style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }}
               onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.05)')}
