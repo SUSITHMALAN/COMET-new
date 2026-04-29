@@ -1,8 +1,19 @@
 import axios from 'axios';
 
+const isProduction = import.meta.env.PROD;
+const BACKEND_URL = isProduction 
+  ? 'https://comet-new-vgri.onrender.com' 
+  : 'http://localhost:8000';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: `${BACKEND_URL}/api`,
 });
+
+export const getImageUrl = (path: string) => {
+  if (!path) return '';
+  if (path.startsWith('http')) return path;
+  return `${BACKEND_URL}${path}`;
+};
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('comet_token');
