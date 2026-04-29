@@ -1,13 +1,15 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
+from sqlalchemy.orm import Session
+from sqlalchemy import text
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-from app.database import engine, SessionLocal, Base
+from app.database import engine, SessionLocal, Base, get_db
 from app.models.models import User, Category, Product, Stock
 from app.utils.auth import get_password_hash
 
@@ -137,6 +139,11 @@ app.include_router(stocks.router, prefix="/api")
 def root():
     return {"message": "COMET API is running", "version": "1.0.0"}
 
-@app.get("/health")
-def health():
-    return {"status": "healthy"}
+@app.get("/api/health")
+def health(db: Session = Depends(get_db)):
+    try:
+        # Ping the database
+        db.execute(text("SELECT 1"))
+        return {"status": "healthy", "database": "connected"}
+    except Exception as e:
+        return {"status": "unhealthy", "error": str(e)}
