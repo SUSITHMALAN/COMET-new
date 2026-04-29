@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const isProduction = import.meta.env.PROD;
+const isProduction = (import.meta as any).env.PROD;
 const BACKEND_URL = isProduction 
   ? 'https://comet-new-vgri.onrender.com' 
   : ''; 
