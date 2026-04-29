@@ -3,16 +3,18 @@ import axios from 'axios';
 const isProduction = import.meta.env.PROD;
 const BACKEND_URL = isProduction 
   ? 'https://comet-new-vgri.onrender.com' 
-  : 'http://localhost:8000';
+  : ''; 
 
 const api = axios.create({
-  baseURL: `${BACKEND_URL}/api`,
+  baseURL: isProduction ? `${BACKEND_URL}/api` : '/api',
 });
 
 export const getImageUrl = (path: string) => {
   if (!path) return '';
   if (path.startsWith('http')) return path;
-  return `${BACKEND_URL}${path}`;
+  // In production, always use the Render URL. In dev, use local proxy or backend.
+  const base = isProduction ? BACKEND_URL : 'http://localhost:8000';
+  return `${base}${path}`;
 };
 
 api.interceptors.request.use((config) => {
