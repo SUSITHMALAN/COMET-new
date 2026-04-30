@@ -51,36 +51,44 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[70vh] container fade-in">
-        <span className="material-symbols-outlined text-[120px] text-white/5 mb-8">shopping_bag</span>
-        <h2 className="text-headline-lg text-white mb-4">YOUR CART IS EMPTY</h2>
-        <p className="text-on-surface-variant mb-12">LOOKS LIKE YOU HAVEN'T ADDED ANY GEAR YET.</p>
-        <Link to="/shop" className="btn-brutalist px-12 py-4">START SHOPPING</Link>
+      <div className="flex flex-col items-center justify-center min-h-[80vh] container animate-soft-fade">
+        <div className="w-40 h-40 bg-surface-container rounded-full flex items-center justify-center mb-10">
+          <span className="material-symbols-outlined text-[64px] opacity-20">shopping_bag</span>
+        </div>
+        <h2 className="text-headline-lg mb-4">YOUR CART IS EMPTY</h2>
+        <p className="text-on-surface-variant opacity-60 mb-12">Looking for something to move in?</p>
+        <Link to="/shop" className="btn-pill btn-pill-primary px-16">START EXPLORING</Link>
       </div>
     );
   }
 
   return (
-    <main className="container py-12 fade-in">
-      <h1 className="text-headline-xl text-white mb-12">YOUR CART</h1>
+    <main className="container py-24 animate-soft-fade">
+      <div className="flex flex-col md:flex-row justify-between items-end mb-20">
+        <div>
+          <p className="text-label-caps text-primary tracking-[0.3em] mb-4">Selection</p>
+          <h1 className="text-headline-lg">YOUR CART</h1>
+        </div>
+        <button onClick={clearCart} className="text-label-caps text-[10px] opacity-40 hover:opacity-100 hover:text-primary transition-all border-b border-outline/20 pb-1">Clear Selection</button>
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 items-start">
         {/* Cart Items */}
-        <div className="lg:col-span-8 space-y-4">
+        <div className="lg:col-span-8 space-y-8">
           {items.map(item => (
             <div
               key={`${item.product.id}-${item.size}-${item.color}`}
-              className="bg-surface-container-low border-2 border-white/10 p-6 flex flex-col sm:flex-row gap-6 items-center"
+              className="group flex flex-col sm:flex-row gap-10 items-center animate-soft-fade"
             >
               {/* Image */}
-              <div className="w-24 aspect-[3/4] flex-shrink-0 bg-surface-container">
+              <div className="w-32 aspect-[3/4] flex-shrink-0 bg-surface-container rounded-[24px] overflow-hidden">
                 {(() => {
                   const imgs = (() => { try { return JSON.parse(item.product.images || '[]'); } catch { return []; } })();
                   return imgs[0] ? (
-                    <img src={getImageUrl(imgs[0])} alt={item.product.name} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all" />
+                    <img src={getImageUrl(imgs[0])} alt={item.product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <span className="font-display text-xl text-white/10">COMET</span>
+                      <span className="font-display text-xl text-outline/20 opacity-20">COMET</span>
                     </div>
                   );
                 })()}
@@ -88,35 +96,36 @@ export default function CartPage() {
 
               {/* Info */}
               <div className="flex-grow text-center sm:text-left">
-                <h3 className="text-label-caps text-white text-lg mb-1">{item.product.name.toUpperCase()}</h3>
-                <p className="text-[10px] text-on-surface-variant font-bold tracking-widest uppercase">
-                  {item.size} / {item.color}
+                <p className="text-label-caps text-[10px] opacity-40 mb-2">{item.product.category?.name || 'CORE'}</p>
+                <h3 className="text-headline-md text-2xl mb-1 group-hover:text-primary transition-colors">{item.product.name}</h3>
+                <p className="text-body text-[12px] opacity-60 font-medium tracking-wider">
+                  SIZE: {item.size} / COLOR: {item.color}
                 </p>
-                <p className="text-white font-bold mt-4">
+                <p className="text-body font-semibold mt-6">
                   ${item.product.price.toFixed(2)}
                 </p>
               </div>
 
               {/* Qty controls */}
-              <div className="flex items-center border-2 border-white/10">
+              <div className="flex items-center bg-surface-container rounded-full p-1">
                 <button
                   onClick={() => updateQuantity(item.product.id, item.size, item.color, item.quantity - 1)}
-                  className="w-10 h-10 flex items-center justify-center hover:bg-white/5 transition-colors"
+                  className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-background transition-all"
                 >
-                  <span className="material-symbols-outlined text-sm">remove</span>
+                  <span className="material-symbols-outlined text-[18px]">remove</span>
                 </button>
-                <span className="w-10 text-center font-bold text-sm">{item.quantity}</span>
+                <span className="w-10 text-center font-semibold">{item.quantity}</span>
                 <button
                   onClick={() => updateQuantity(item.product.id, item.size, item.color, item.quantity + 1)}
-                  className="w-10 h-10 flex items-center justify-center hover:bg-white/5 transition-colors"
+                  className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-background transition-all"
                 >
-                  <span className="material-symbols-outlined text-sm">add</span>
+                  <span className="material-symbols-outlined text-[18px]">add</span>
                 </button>
               </div>
 
               {/* Subtotal */}
               <div className="sm:min-w-[120px] text-right">
-                <p className="text-xl font-bold text-white">
+                <p className="text-2xl font-semibold">
                   ${(item.product.price * item.quantity).toFixed(2)}
                 </p>
               </div>
@@ -124,76 +133,78 @@ export default function CartPage() {
               {/* Remove */}
               <button
                 onClick={() => removeItem(item.product.id, item.size, item.color)}
-                className="text-on-surface-variant hover:text-primary transition-colors p-2"
+                className="w-12 h-12 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-primary/10 hover:text-primary transition-all"
               >
-                <span className="material-symbols-outlined">delete</span>
+                <span className="material-symbols-outlined text-[20px]">delete_outline</span>
               </button>
             </div>
           ))}
         </div>
 
         {/* Order Summary */}
-        <div className="lg:col-span-4 sticky top-24">
-          <div className="bg-surface-container border-2 border-white/10 p-8">
-            <h2 className="text-label-caps text-xl text-white mb-8 border-b-2 border-white/10 pb-4">
-              ORDER SUMMARY
+        <div className="lg:col-span-4 lg:sticky lg:top-32">
+          <div className="bg-surface p-10 rounded-[40px] border border-outline/10 shadow-sm">
+            <h2 className="text-label-caps text-lg mb-10 border-b border-outline/10 pb-6 opacity-80">
+              Order Summary
             </h2>
 
-            <div className="space-y-4 mb-8">
+            <div className="space-y-6 mb-10">
               {items.map(item => (
-                <div key={`${item.product.id}-${item.size}-${item.color}`} className="flex justify-between text-xs text-on-surface-variant">
-                  <span>{item.product.name.toUpperCase()} ×{item.quantity}</span>
-                  <span className="text-white">${(item.product.price * item.quantity).toFixed(2)}</span>
+                <div key={`${item.product.id}-${item.size}-${item.color}`} className="flex justify-between text-[13px] opacity-60">
+                  <span className="font-light">{item.product.name} ×{item.quantity}</span>
+                  <span className="font-medium">${(item.product.price * item.quantity).toFixed(2)}</span>
                 </div>
               ))}
-              <div className="border-t-2 border-white/10 pt-4 flex justify-between items-end">
-                <span className="text-label-caps text-white">TOTAL</span>
-                <span className="text-3xl font-bold text-primary">${totalPrice().toFixed(2)}</span>
+              <div className="border-t border-outline/10 pt-8 flex justify-between items-end">
+                <span className="text-label-caps font-semibold">EST. TOTAL</span>
+                <span className="text-3xl font-semibold text-on-background">${totalPrice().toFixed(2)}</span>
               </div>
             </div>
 
             {!checkoutMode ? (
-              <button className="btn-brutalist w-full py-4" onClick={() => setCheckoutMode(true)}>
+              <button className="btn-pill btn-pill-primary w-full h-16 text-[13px] tracking-widest font-bold" onClick={() => setCheckoutMode(true)}>
                 PROCEED TO CHECKOUT
               </button>
             ) : (
-              <div className="space-y-6 fade-in">
-                <h3 className="text-label-caps text-xs text-white">SHIPPING INFORMATION</h3>
+              <div className="space-y-8 animate-soft-fade">
+                <h3 className="text-label-caps text-[11px] opacity-40">Shipping Information</h3>
                 
                 <div className="space-y-4">
                   <input
                     type="text"
-                    placeholder="FULL NAME"
+                    placeholder="Full Name"
                     value={form.name}
-                    onChange={e => setForm(f => ({ ...f, name: e.target.value.toUpperCase() }))}
-                    className="input-minimal w-full"
+                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                    className="w-full bg-surface-container-low border border-outline/10 rounded-2xl px-6 py-4 text-[14px] focus:outline-none focus:border-primary transition-all"
                   />
-                  <input
-                    type="tel"
-                    placeholder="PHONE NUMBER"
-                    value={form.phone}
-                    onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-                    className="input-minimal w-full"
-                  />
-                  <input
-                    type="email"
-                    placeholder="EMAIL (OPTIONAL)"
-                    value={form.email}
-                    onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                    className="input-minimal w-full"
-                  />
+                  <div className="grid grid-cols-2 gap-4">
+                    <input
+                      type="tel"
+                      placeholder="Phone"
+                      value={form.phone}
+                      onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                      className="w-full bg-surface-container-low border border-outline/10 rounded-2xl px-6 py-4 text-[14px] focus:outline-none focus:border-primary transition-all"
+                    />
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      value={form.email}
+                      onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                      className="w-full bg-surface-container-low border border-outline/10 rounded-2xl px-6 py-4 text-[14px] focus:outline-none focus:border-primary transition-all"
+                    />
+                  </div>
                   <textarea
-                    placeholder="SHIPPING ADDRESS"
+                    placeholder="Shipping Address"
                     value={form.address}
-                    onChange={e => setForm(f => ({ ...f, address: e.target.value.toUpperCase() }))}
-                    className="input-minimal w-full"
+                    onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
+                    className="w-full bg-surface-container-low border border-outline/10 rounded-2xl px-6 py-4 text-[14px] focus:outline-none focus:border-primary transition-all"
                     rows={3}
                   />
                   <textarea
-                    placeholder="NOTES (OPTIONAL)"
+                    placeholder="Notes (Optional)"
                     value={form.notes}
-                    onChange={e => setForm(f => ({ ...f, notes: e.target.value.toUpperCase() }))}
-                    className="input-minimal w-full"
+                    onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
+                    className="w-full bg-surface-container-low border border-outline/10 rounded-2xl px-6 py-4 text-[14px] focus:outline-none focus:border-primary transition-all"
                     rows={2}
                   />
                 </div>
@@ -201,13 +212,13 @@ export default function CartPage() {
                 <button
                   onClick={handleWhatsAppOrder}
                   disabled={loading}
-                  className="btn-brutalist w-full py-4 bg-secondary text-black hover:bg-white flex items-center justify-center gap-3"
+                  className="btn-pill btn-pill-primary w-full h-16 bg-secondary text-white hover:bg-on-background flex items-center justify-center gap-4 text-[13px] tracking-widest font-bold"
                 >
-                  <span className="material-symbols-outlined">send</span>
-                  {loading ? 'PROCESSING...' : 'CONFIRM ORDER'}
+                  <span className="material-symbols-outlined text-[20px]">send</span>
+                  {loading ? 'PROCESSING...' : 'PLACE ORDER'}
                 </button>
 
-                <button className="text-label-caps text-[10px] text-on-surface-variant hover:text-white w-full text-center" onClick={() => setCheckoutMode(false)}>
+                <button className="text-label-caps text-[10px] opacity-40 hover:opacity-100 w-full text-center tracking-widest" onClick={() => setCheckoutMode(false)}>
                   ← BACK TO CART
                 </button>
               </div>
