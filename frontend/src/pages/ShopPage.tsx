@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { productsApi, categoriesApi } from '../api';
+import { productsApi, categoriesApi, getImageUrl } from '../api';
 import { Product, Category } from '../types';
 import ProductCard from '../components/ui/ProductCard';
 
@@ -58,119 +58,112 @@ export default function ShopPage() {
   };
 
   return (
-    <main className="container py-24 animate-soft-fade">
-      {/* Hero Header */}
-      <header className="mb-32 flex flex-col md:flex-row md:items-end justify-between gap-12">
-        <div className="max-w-2xl">
-          <p className="text-label-caps text-primary tracking-[0.3em] mb-4">Discovery</p>
-          <h1 className="text-headline-lg">CORE CATALOG</h1>
-          <p className="text-body text-[16px] opacity-60 mt-6 leading-relaxed">
-            A curated selection of high-performance gear engineered for contemporary movement. Each piece is defined by technical precision and timeless aesthetics.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-6 items-center">
-          <button 
-            className="text-label-caps tracking-widest border-b border-on-background pb-1 hover:text-primary transition-all"
-            onClick={() => clearFilters()}
-          >
-            Clear Filters / {products.length.toString().padStart(2, '0')}
-          </button>
-          <div className="bg-surface-container rounded-full p-1 flex items-center">
-            <button className="px-6 py-2 bg-on-background text-white text-[11px] font-bold tracking-widest rounded-full uppercase">Grid</button>
-            <button className="px-6 py-2 text-on-surface-variant text-[11px] font-bold tracking-widest uppercase hover:text-on-background">List</button>
-          </div>
-        </div>
+    <main className="pt-32 pb-20 px-16 max-w-[1440px] mx-auto animate-fade-in-slide">
+      {/* Page Header */}
+      <header className="mb-12">
+        <h1 className="text-headline-xl text-primary mb-2">Girls' Collection</h1>
+        <p className="text-body-lg text-secondary font-light">Timeless pieces designed for moments of wonder.</p>
       </header>
 
-      {/* Product Viewport */}
-      <div className="flex flex-col lg:flex-row gap-20">
-        {/* Side Filters (Desktop) */}
-        <aside className="hidden lg:block w-72 flex-shrink-0">
-          <div className="sticky top-32 space-y-20">
-            <div>
-              <h3 className="text-label-caps text-[11px] mb-8 opacity-40">Categories</h3>
-              <ul className="space-y-6">
-                <li>
-                  <button 
-                    onClick={() => clearFilters()}
-                    className={`text-body text-[14px] text-left w-full transition-all flex justify-between items-center ${!categorySlug && !filter ? 'text-on-background font-semibold' : 'text-on-surface-variant hover:text-on-background'}`}
-                  >
-                    <span>All Products</span>
-                    {!categorySlug && !filter && <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>}
-                  </button>
-                </li>
-                {categories.map(cat => (
-                  <li key={cat.id}>
-                    <button
-                      onClick={() => setCategory(cat.slug)}
-                      className={`text-body text-[14px] text-left w-full transition-all flex justify-between items-center ${categorySlug === cat.slug ? 'text-on-background font-semibold' : 'text-on-surface-variant hover:text-on-background'}`}
-                    >
-                      <span>{cat.name}</span>
-                      {categorySlug === cat.slug && <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-label-caps text-[11px] mb-8 opacity-40">Drop Status</h3>
-              <div className="space-y-6">
+      {/* Catalog Layout */}
+      <div className="flex flex-col lg:flex-row gap-12">
+        {/* Filters Side Panel (Glassmorphic) */}
+        <aside className="w-full lg:w-64 space-y-10">
+          <section>
+            <h3 className="text-label-sm text-primary mb-4 uppercase tracking-widest">Categories</h3>
+            <div className="flex flex-wrap lg:flex-col gap-3">
+              <button 
+                onClick={() => clearFilters()}
+                className={`glass-card px-4 py-2 rounded-full border border-rose-100 text-sm text-primary transition-all duration-300 text-left ${!categorySlug && !filter ? 'bg-rose-100/30 font-semibold' : 'hover:bg-rose-50/50'}`}
+              >
+                All Products
+              </button>
+              {categories.map(cat => (
                 <button 
-                  onClick={() => setFilter('new')}
-                  className={`text-body text-[14px] text-left w-full transition-all flex justify-between items-center ${filter === 'new' ? 'text-on-background font-semibold' : 'text-on-surface-variant hover:text-on-background'}`}
+                  key={cat.id}
+                  onClick={() => setCategory(cat.slug)}
+                  className={`glass-card px-4 py-2 rounded-full border border-rose-100 text-sm text-primary transition-all duration-300 text-left ${categorySlug === cat.slug ? 'bg-rose-100/30 font-semibold' : 'hover:bg-rose-50/50'}`}
                 >
-                  <span>New Arrivals</span>
-                  {filter === 'new' && <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>}
+                  {cat.name}
                 </button>
-                <button 
-                  onClick={() => setFilter('featured')}
-                  className={`text-body text-[14px] text-left w-full transition-all flex justify-between items-center ${filter === 'featured' ? 'text-on-background font-semibold' : 'text-on-surface-variant hover:text-on-background'}`}
-                >
-                  <span>Featured Drops</span>
-                  {filter === 'featured' && <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>}
-                </button>
-              </div>
+              ))}
             </div>
+          </section>
 
-            <div className="p-10 rounded-[32px] bg-primary/10 border border-primary/10 relative overflow-hidden group">
-              <p className="text-label-caps text-[10px] text-primary mb-4">Membership</p>
-              <h4 className="text-headline-md text-xl mb-6">COMET PRO++</h4>
-              <p className="text-body text-[12px] opacity-60 mb-8 leading-relaxed">Priority access to archival drops and engineering advice.</p>
-              <button className="text-label-caps text-[10px] font-bold border-b border-primary pb-1 hover:text-primary transition-all">Join Fleet</button>
+          <section>
+            <h3 className="text-label-sm text-primary mb-4 uppercase tracking-widest">Status</h3>
+            <div className="flex flex-wrap gap-2">
+              <button 
+                onClick={() => setFilter('new')}
+                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold transition-all ${filter === 'new' ? 'bg-primary-container text-on-primary-container' : 'bg-surface-container text-on-surface-variant hover:bg-rose-100/50'}`}
+              >
+                New Arrivals
+              </button>
+              <button 
+                onClick={() => setFilter('featured')}
+                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold transition-all ${filter === 'featured' ? 'bg-primary-container text-on-primary-container' : 'bg-surface-container text-on-surface-variant hover:bg-rose-100/50'}`}
+              >
+                Featured Drops
+              </button>
             </div>
-          </div>
+          </section>
+
+          <section>
+            <h3 className="text-label-sm text-primary mb-4 uppercase tracking-widest">Color Palette</h3>
+            <div className="flex gap-3">
+              <div className="w-6 h-6 rounded-full bg-[#fadadd] border border-rose-200 cursor-pointer hover:scale-110 transition-transform"></div>
+              <div className="w-6 h-6 rounded-full bg-[#fff8f7] border border-rose-200 cursor-pointer hover:scale-110 transition-transform"></div>
+              <div className="w-6 h-6 rounded-full bg-[#e4e3db] border border-rose-200 cursor-pointer hover:scale-110 transition-transform"></div>
+              <div className="w-6 h-6 rounded-full bg-[#e1e1f5] border border-rose-200 cursor-pointer hover:scale-110 transition-transform"></div>
+            </div>
+          </section>
         </aside>
 
         {/* Product Grid */}
-        <div className="flex-grow">
+        <div className="flex-1">
           {loading ? (
             <div className="flex justify-center py-24">
-              <div className="spinner"></div>
+              <div className="w-8 h-8 border-2 border-rose-200 border-t-rose-400 rounded-full animate-spin"></div>
             </div>
           ) : products.length === 0 ? (
             <div className="text-center py-32 bg-surface-container rounded-[40px]">
-              <h3 className="text-headline-md mb-6">No matches found</h3>
-              <button className="btn-pill btn-pill-outline" onClick={clearFilters}>Reset Filters</button>
+              <h3 className="text-headline-md mb-6 text-primary">No pieces found</h3>
+              <button className="text-label-sm text-rose-400 border-b border-rose-200" onClick={clearFilters}>Reset Collection</button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-20">
-              {products.map(p => <ProductCard key={p.id} product={p} />)}
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-12 gap-x-8">
+              {products.map(p => (
+                <div key={p.id} className="group relative bg-white rounded-xl overflow-hidden shadow-soft hover:shadow-xl transition-all duration-500">
+                  <Link to={`/product/${p.id}`} className="block aspect-[4/5] w-full overflow-hidden">
+                    <img 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                      alt={p.name}
+                      src={(() => { try { return getImageUrl(JSON.parse(p.images)[0]); } catch { return ''; } })() || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1920&auto=format&fit=crop"}
+                    />
+                  </Link>
+                  <div className="glass-card absolute bottom-0 left-0 right-0 p-6 m-4 rounded-xl border border-white/40 shadow-sm translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                    <div className="flex justify-between items-start mb-1">
+                      <Link to={`/product/${p.id}`} className="text-headline-md text-lg text-primary hover:text-rose-600 transition-colors">{p.name}</Link>
+                      <span className="text-body-md text-primary font-semibold">${p.price}</span>
+                    </div>
+                    <p className="text-[10px] text-secondary tracking-widest uppercase mb-4">{p.category?.name || 'Collection'}</p>
+                    <button className="w-full py-3 rounded-full bg-primary-container text-on-primary-container text-label-sm uppercase tracking-widest hover:bg-rose-200 transition-colors duration-300">
+                      Add to Bag
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
           {/* Pagination */}
-          <div className="mt-40 flex justify-center items-center gap-4">
-            <button className="w-14 h-14 rounded-full border border-outline/10 flex items-center justify-center text-on-background hover:bg-on-background hover:text-white transition-all">
-              <span className="material-symbols-outlined text-[20px]">chevron_left</span>
+          <div className="mt-20 flex justify-center items-center gap-4">
+            <button className="w-12 h-12 rounded-full border border-rose-100 flex items-center justify-center text-rose-300 hover:bg-rose-50 transition-colors duration-300">
+              <span className="material-symbols-outlined">chevron_left</span>
             </button>
-            <div className="flex gap-4">
-              <button className="w-14 h-14 rounded-full bg-on-background text-white font-medium text-[14px]">01</button>
-              <button className="w-14 h-14 rounded-full border border-outline/10 text-on-background font-medium text-[14px] hover:bg-surface">02</button>
-              <button className="w-14 h-14 rounded-full border border-outline/10 text-on-background font-medium text-[14px] hover:bg-surface">03</button>
-            </div>
-            <button className="w-14 h-14 rounded-full border border-outline/10 flex items-center justify-center text-on-background hover:bg-on-background hover:text-white transition-all">
-              <span className="material-symbols-outlined text-[20px]">chevron_right</span>
+            <span className="text-label-sm text-primary">1 / 5</span>
+            <button className="w-12 h-12 rounded-full border border-rose-100 flex items-center justify-center text-rose-400 hover:bg-rose-50 transition-colors duration-300">
+              <span className="material-symbols-outlined">chevron_right</span>
             </button>
           </div>
         </div>
