@@ -58,52 +58,55 @@ export default function ShopPage() {
   };
 
   return (
-    <main className="container py-12 fade-in">
+    <main className="container py-24 animate-soft-fade">
       {/* Hero Header */}
-      <header className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
-        <div>
-          <h1 className="text-headline-xl text-white uppercase">CORE CATALOG</h1>
-          <p className="text-body text-lg text-on-surface-variant max-w-lg mt-4 leading-relaxed">
-            HIGH-VELOCITY PERFORMANCE GEAR ENGINEERED FOR THE URBAN FRONTIER. BRUTALIST AESTHETICS MET WITH TECHNICAL PRECISION.
+      <header className="mb-32 flex flex-col md:flex-row md:items-end justify-between gap-12">
+        <div className="max-w-2xl">
+          <p className="text-label-caps text-primary tracking-[0.3em] mb-4">Discovery</p>
+          <h1 className="text-headline-lg">CORE CATALOG</h1>
+          <p className="text-body text-[16px] opacity-60 mt-6 leading-relaxed">
+            A curated selection of high-performance gear engineered for contemporary movement. Each piece is defined by technical precision and timeless aesthetics.
           </p>
         </div>
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-6 items-center">
           <button 
-            className="btn-brutalist"
+            className="text-label-caps tracking-widest border-b border-on-background pb-1 hover:text-primary transition-all"
             onClick={() => clearFilters()}
           >
-            FILTER / {products.length.toString().padStart(2, '0')}
+            Clear Filters / {products.length.toString().padStart(2, '0')}
           </button>
-          <div className="bg-surface-container border-2 border-white/10 flex items-center p-1">
-            <button className="px-4 py-2 bg-primary text-white text-label-caps">GRID</button>
-            <button className="px-4 py-2 text-white text-label-caps hover:bg-white/5 opacity-50">LIST</button>
+          <div className="bg-surface-container rounded-full p-1 flex items-center">
+            <button className="px-6 py-2 bg-on-background text-white text-[11px] font-bold tracking-widest rounded-full uppercase">Grid</button>
+            <button className="px-6 py-2 text-on-surface-variant text-[11px] font-bold tracking-widest uppercase hover:text-on-background">List</button>
           </div>
         </div>
       </header>
 
       {/* Product Viewport */}
-      <div className="flex flex-col lg:flex-row gap-12">
+      <div className="flex flex-col lg:flex-row gap-20">
         {/* Side Filters (Desktop) */}
-        <aside className="hidden lg:block w-64 flex-shrink-0">
-          <div className="sticky top-24 space-y-12">
+        <aside className="hidden lg:block w-72 flex-shrink-0">
+          <div className="sticky top-32 space-y-20">
             <div>
-              <h3 className="text-label-caps text-white mb-6 border-b border-white/20 pb-2">CATEGORIES</h3>
-              <ul className="space-y-4">
+              <h3 className="text-label-caps text-[11px] mb-8 opacity-40">Categories</h3>
+              <ul className="space-y-6">
                 <li>
                   <button 
                     onClick={() => clearFilters()}
-                    className={`text-label-caps text-left w-full transition-colors ${!categorySlug && !filter ? 'text-primary' : 'text-on-surface-variant hover:text-white'}`}
+                    className={`text-body text-[14px] text-left w-full transition-all flex justify-between items-center ${!categorySlug && !filter ? 'text-on-background font-semibold' : 'text-on-surface-variant hover:text-on-background'}`}
                   >
-                    ALL PRODUCTS
+                    <span>All Products</span>
+                    {!categorySlug && !filter && <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>}
                   </button>
                 </li>
                 {categories.map(cat => (
                   <li key={cat.id}>
                     <button
                       onClick={() => setCategory(cat.slug)}
-                      className={`text-label-caps text-left w-full transition-colors ${categorySlug === cat.slug ? 'text-primary' : 'text-on-surface-variant hover:text-white'}`}
+                      className={`text-body text-[14px] text-left w-full transition-all flex justify-between items-center ${categorySlug === cat.slug ? 'text-on-background font-semibold' : 'text-on-surface-variant hover:text-on-background'}`}
                     >
-                      {cat.name}
+                      <span>{cat.name}</span>
+                      {categorySlug === cat.slug && <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>}
                     </button>
                   </li>
                 ))}
@@ -111,29 +114,30 @@ export default function ShopPage() {
             </div>
 
             <div>
-              <h3 className="text-label-caps text-white mb-6 border-b border-white/20 pb-2">DROP STATUS</h3>
-              <div className="space-y-3">
+              <h3 className="text-label-caps text-[11px] mb-8 opacity-40">Drop Status</h3>
+              <div className="space-y-6">
                 <button 
                   onClick={() => setFilter('new')}
-                  className={`flex items-center gap-3 group w-full ${filter === 'new' ? 'text-white' : 'text-on-surface-variant'}`}
+                  className={`text-body text-[14px] text-left w-full transition-all flex justify-between items-center ${filter === 'new' ? 'text-on-background font-semibold' : 'text-on-surface-variant hover:text-on-background'}`}
                 >
-                  <div className={`w-4 h-4 border ${filter === 'new' ? 'bg-primary border-primary' : 'border-white group-hover:border-primary'}`}></div>
-                  <span className="text-label-caps text-[10px]">New Arrivals</span>
+                  <span>New Arrivals</span>
+                  {filter === 'new' && <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>}
                 </button>
                 <button 
                   onClick={() => setFilter('featured')}
-                  className={`flex items-center gap-3 group w-full ${filter === 'featured' ? 'text-white' : 'text-on-surface-variant'}`}
+                  className={`text-body text-[14px] text-left w-full transition-all flex justify-between items-center ${filter === 'featured' ? 'text-on-background font-semibold' : 'text-on-surface-variant hover:text-on-background'}`}
                 >
-                  <div className={`w-4 h-4 border ${filter === 'featured' ? 'bg-primary border-primary' : 'border-white group-hover:border-primary'}`}></div>
-                  <span className="text-label-caps text-[10px]">Featured</span>
+                  <span>Featured Drops</span>
+                  {filter === 'featured' && <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>}
                 </button>
               </div>
             </div>
 
-            <div className="p-6 bg-primary text-white">
-              <p className="text-headline-lg text-3xl leading-none mb-4 italic">COMET PRO++</p>
-              <p className="text-body text-[12px] leading-tight mb-6">EARLY ACCESS TO ALL LIMITED DROPS AND EXCLUSIVE PERFORMANCE GEAR.</p>
-              <button className="w-full border-2 border-white py-3 text-label-caps hover:bg-white hover:text-primary transition-all">JOIN THE FLEET</button>
+            <div className="p-10 rounded-[32px] bg-primary/10 border border-primary/10 relative overflow-hidden group">
+              <p className="text-label-caps text-[10px] text-primary mb-4">Membership</p>
+              <h4 className="text-headline-md text-xl mb-6">COMET PRO++</h4>
+              <p className="text-body text-[12px] opacity-60 mb-8 leading-relaxed">Priority access to archival drops and engineering advice.</p>
+              <button className="text-label-caps text-[10px] font-bold border-b border-primary pb-1 hover:text-primary transition-all">Join Fleet</button>
             </div>
           </div>
         </aside>
@@ -142,31 +146,31 @@ export default function ShopPage() {
         <div className="flex-grow">
           {loading ? (
             <div className="flex justify-center py-24">
-              <div className="w-12 h-12 border-4 border-white/10 border-t-primary rounded-full animate-spin"></div>
+              <div className="spinner"></div>
             </div>
           ) : products.length === 0 ? (
-            <div className="text-center py-24">
-              <h3 className="text-headline-lg text-4xl mb-4">NO PRODUCTS FOUND</h3>
-              <button className="btn-brutalist" onClick={clearFilters}>CLEAR ALL FILTERS</button>
+            <div className="text-center py-32 bg-surface-container rounded-[40px]">
+              <h3 className="text-headline-md mb-6">No matches found</h3>
+              <button className="btn-pill btn-pill-outline" onClick={clearFilters}>Reset Filters</button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-20">
               {products.map(p => <ProductCard key={p.id} product={p} />)}
             </div>
           )}
 
-          {/* Pagination (Static for now) */}
-          <div className="mt-24 flex justify-center items-center gap-4">
-            <button className="w-12 h-12 border-2 border-white flex items-center justify-center text-white hover:bg-white hover:text-black transition-all">
-              <span className="material-symbols-outlined">chevron_left</span>
+          {/* Pagination */}
+          <div className="mt-40 flex justify-center items-center gap-4">
+            <button className="w-14 h-14 rounded-full border border-outline/10 flex items-center justify-center text-on-background hover:bg-on-background hover:text-white transition-all">
+              <span className="material-symbols-outlined text-[20px]">chevron_left</span>
             </button>
-            <div className="flex gap-2">
-              <button className="w-12 h-12 bg-white text-black font-label-caps">01</button>
-              <button className="w-12 h-12 border-2 border-white text-white font-label-caps hover:bg-white/5">02</button>
-              <button className="w-12 h-12 border-2 border-white text-white font-label-caps hover:bg-white/5">03</button>
+            <div className="flex gap-4">
+              <button className="w-14 h-14 rounded-full bg-on-background text-white font-medium text-[14px]">01</button>
+              <button className="w-14 h-14 rounded-full border border-outline/10 text-on-background font-medium text-[14px] hover:bg-surface">02</button>
+              <button className="w-14 h-14 rounded-full border border-outline/10 text-on-background font-medium text-[14px] hover:bg-surface">03</button>
             </div>
-            <button className="w-12 h-12 border-2 border-white flex items-center justify-center text-white hover:bg-white hover:text-black transition-all">
-              <span className="material-symbols-outlined">chevron_right</span>
+            <button className="w-14 h-14 rounded-full border border-outline/10 flex items-center justify-center text-on-background hover:bg-on-background hover:text-white transition-all">
+              <span className="material-symbols-outlined text-[20px]">chevron_right</span>
             </button>
           </div>
         </div>

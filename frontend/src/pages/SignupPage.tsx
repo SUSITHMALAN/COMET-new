@@ -31,41 +31,42 @@ export default function SignupPage() {
   };
 
   return (
-    <main className="container flex items-center justify-center py-20 fade-in min-h-[70vh]">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-12">
-          <h1 className="text-headline-xl text-white mb-4">JOIN THE FLEET</h1>
-          <p className="text-on-surface-variant text-sm tracking-widest font-bold">CREATE YOUR COMET PROFILE</p>
+    <main className="container flex items-center justify-center py-32 animate-soft-fade min-h-[80vh]">
+      <div className="w-full max-w-lg">
+        <div className="text-center mb-16">
+          <p className="text-label-caps text-primary tracking-[0.3em] mb-4">Onboarding</p>
+          <h1 className="text-headline-lg mb-6">JOIN THE FLEET</h1>
+          <p className="text-body text-[14px] opacity-60 max-w-xs mx-auto leading-relaxed">Create your profile to access early drops and archival technical gear.</p>
         </div>
 
-        <div className="bg-surface-container border-2 border-white/10 p-10">
-          <form onSubmit={handleSignup} className="space-y-6">
-            <div className="space-y-2">
-              <label className="text-label-caps text-[10px] text-white">FULL NAME</label>
+        <div className="bg-surface p-12 rounded-[48px] border border-outline/10 shadow-sm">
+          <form onSubmit={handleSignup} className="space-y-8">
+            <div className="space-y-4">
+              <label className="text-label-caps text-[10px] opacity-40 ml-4">Full Name</label>
               <input
                 type="text"
                 value={name}
-                onChange={e => setName(e.target.value.toUpperCase())}
-                placeholder="JOHN DOE"
+                onChange={e => setName(e.target.value)}
+                placeholder="John Doe"
                 required
-                className="input-minimal w-full bg-surface-container-low"
+                className="w-full bg-surface-container-low border border-outline/10 rounded-full px-8 py-5 text-[14px] focus:outline-none focus:border-primary transition-all"
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-label-caps text-[10px] text-white">EMAIL ADDRESS</label>
+            <div className="space-y-4">
+              <label className="text-label-caps text-[10px] opacity-40 ml-4">Email Address</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="YOU@EXAMPLE.COM"
+                placeholder="you@example.com"
                 required
-                className="input-minimal w-full bg-surface-container-low"
+                className="w-full bg-surface-container-low border border-outline/10 rounded-full px-8 py-5 text-[14px] focus:outline-none focus:border-primary transition-all"
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-label-caps text-[10px] text-white">PASSWORD</label>
+            <div className="space-y-4">
+              <label className="text-label-caps text-[10px] opacity-40 ml-4">Password</label>
               <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'}
@@ -74,14 +75,14 @@ export default function SignupPage() {
                   placeholder="••••••••"
                   required
                   minLength={6}
-                  className="input-minimal w-full bg-surface-container-low pr-12"
+                  className="w-full bg-surface-container-low border border-outline/10 rounded-full px-8 py-5 text-[14px] focus:outline-none focus:border-primary transition-all pr-16"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass(!showPass)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-white"
+                  className="absolute right-6 top-1/2 -translate-y-1/2 text-on-surface-variant/40 hover:text-on-background transition-colors"
                 >
-                  <span className="material-symbols-outlined text-sm">
+                  <span className="material-symbols-outlined text-[20px]">
                     {showPass ? 'visibility_off' : 'visibility'}
                   </span>
                 </button>
@@ -91,17 +92,17 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-brutalist w-full py-4 text-sm"
+              className="btn-pill btn-pill-primary w-full h-16 text-[13px] font-bold tracking-widest mt-6"
             >
               {loading ? 'CREATING PROFILE...' : 'INITIALIZE ACCOUNT'}
             </button>
           </form>
 
-          <div className="mt-10 pt-8 border-t-2 border-white/5 text-center">
-            <p className="text-[10px] text-on-surface-variant font-bold tracking-widest uppercase mb-4">
-              ALREADY REGISTERED?
+          <div className="mt-12 pt-10 border-t border-outline/10 text-center">
+            <p className="text-[11px] text-on-surface-variant opacity-40 font-medium tracking-widest uppercase mb-6">
+              Already registered?
             </p>
-            <Link to="/login" className="text-label-caps text-white hover:text-primary transition-colors border-b-2 border-primary pb-1">
+            <Link to="/login" className="text-label-caps text-[11px] font-bold tracking-widest text-on-background hover:text-primary transition-all border-b border-primary/30 pb-1">
               SIGN IN HERE
             </Link>
           </div>

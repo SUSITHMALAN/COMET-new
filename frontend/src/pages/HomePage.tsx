@@ -31,90 +31,102 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="bg-black text-white">
+    <div className="bg-background text-on-background">
       {/* Hero Section */}
-      <section className="relative h-[921px] w-full flex items-center justify-center overflow-hidden bg-black">
+      <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-surface-container-low pt-20">
         <motion.div 
-          initial={{ scale: 1.05, opacity: 0 }}
+          initial={{ scale: 1.02, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.5, ease: 'easeOut' }}
+          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
           className="absolute inset-0 z-0"
         >
+          {/* Subtle elegant image or light gradient */}
           <img 
-            className="w-full h-full object-cover opacity-60" 
+            className="w-full h-full object-cover opacity-20 grayscale-0" 
             alt="Hero background"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsBq-U9wJ5C_ZNMuBNLczUfi0h7oZ01NiRFCKd2lXy3QYh6YC_mMY-6DkvtNuziw2rqT_P--5J9Lcucs3jSWIHTbn2H7BJvqfc88OnfVr0zjeRfM6v9xkf2vqeDLmhtCnZNnOW1gMvr38afeBX5y3iyXgeGRoOyJVPC-hwwaa4ibC6_JS-s7_Y6IDGww3HsAkRMQIMDd8Ed3P2f1cbJeohDYvXrQhAN83qDMvFgqXOxa5xe93n6xfuhTPpbHDb2i5ggnulYie-GYCt"
+            src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/20 to-background"></div>
         </motion.div>
         
-        <div className="relative z-10 text-center px-6 max-w-[1200px]">
-          <motion.h1 
-            initial={{ opacity: 0, y: 50 }}
+        <div className="relative z-10 text-center px-6 max-w-[1000px]">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="font-headline-xl text-headline-xl text-white uppercase mb-8"
+            transition={{ duration: 0.8 }}
+            className="text-label-caps tracking-[0.3em] mb-6 opacity-60"
           >
-            MOVE FAST.<br />
-            <span className="text-primary">COMET.</span>
+            Spring / Summer 2026 Collection
+          </motion.p>
+          <motion.h1 
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="text-headline-xl mb-10"
+          >
+            Refined Motion.<br />
+            <span className="italic font-light">Defined Style.</span>
           </motion.h1>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col md:flex-row gap-6 justify-center"
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="flex flex-col sm:flex-row gap-6 justify-center"
           >
-            <Link to="/shop?filter=new" className="bg-white/10 backdrop-blur-md border border-white/20 text-white font-label-caps text-[14px] px-12 py-6 hover:bg-white/20 hover:border-primary transition-all active:scale-95 text-center tracking-widest font-bold">
-              SHOP DROP 01
+            <Link to="/shop?filter=new" className="btn-pill btn-pill-primary">
+              EXPLORE NEW DROPS
             </Link>
-            <Link to="/shop" className="bg-white/5 backdrop-blur-md border border-white/10 text-white/80 font-label-caps text-[14px] px-12 py-6 hover:bg-white/10 hover:text-white transition-all active:scale-95 text-center tracking-widest font-bold">
+            <Link to="/shop" className="btn-pill btn-pill-outline">
               VIEW LOOKBOOK
             </Link>
           </motion.div>
         </div>
       </section>
 
-      {/* Marquee / Ticker */}
-      <div className="bg-primary py-4 border-y-2 border-black overflow-hidden whitespace-nowrap relative z-20">
-        <div className="inline-block animate-[marquee_20s_linear_infinite]">
-          <span className="font-headline-md text-headline-md text-black mx-8 uppercase">
-            NEW SEASON ARRIVING NOW — ORDER VIA WHATSAPP — WORLDWIDE SHIPPING — NEW SEASON ARRIVING NOW — ORDER VIA WHATSAPP — WORLDWIDE SHIPPING
+      {/* Ticker / Marquee - Refined for light mode */}
+      <div className="bg-surface-container py-8 border-y border-outline/10 overflow-hidden whitespace-nowrap relative z-20">
+        <div className="inline-block animate-[marquee_30s_linear_infinite]">
+          <span className="text-label-caps text-[14px] opacity-40 mx-12 uppercase">
+            Curated Performance — Conscious Craftsmanship — Timeless Kinetics — Global Delivery — Curated Performance — Conscious Craftsmanship — Timeless Kinetics — Global Delivery
           </span>
         </div>
       </div>
 
       {/* New Arrivals Bento Grid */}
-      <section className="relative z-10 max-w-[1440px] mx-auto px-6 py-24 mt-10">
-        <motion.div {...fadeInUp} className="flex justify-between items-end mb-12 border-b-2 border-white/20 pb-6">
-          <h2 className="font-headline-lg text-[64px] leading-none text-white uppercase">NEW ARRIVALS</h2>
-          <Link to="/shop?filter=new" className="font-label-caps text-[13px] tracking-widest font-bold text-primary flex items-center gap-2 hover:underline mb-2">
-            VIEW ALL <span className="material-symbols-outlined text-lg">arrow_forward</span>
+      <section className="relative z-10 max-w-[1440px] mx-auto px-6 py-40">
+        <motion.div {...fadeInUp} className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8">
+          <div>
+            <p className="text-label-caps text-primary tracking-[0.2em] mb-4">Latest Additions</p>
+            <h2 className="text-headline-lg">NEW ARRIVALS</h2>
+          </div>
+          <Link to="/shop?filter=new" className="text-label-caps tracking-[0.1em] border-b border-on-background/20 pb-1 hover:border-primary transition-all">
+            Browse All Collection
           </Link>
         </motion.div>
         
         {loading ? (
            <div className="flex justify-center items-center py-24">
-             <div className="w-12 h-12 border-4 border-white/10 border-t-primary rounded-full animate-spin"></div>
+             <div className="spinner"></div>
            </div>
         ) : (
-          <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {/* Large Card */}
+          <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-4 gap-10">
+            {/* Large Hero Card */}
             {newArrivals.length > 0 && (
               <motion.div variants={fadeInUp} className="md:col-span-2 md:row-span-2">
-                <Link to={`/product/${newArrivals[0].id}`} className="relative group overflow-hidden bg-surface-container block h-full min-h-[500px]">
+                <Link to={`/product/${newArrivals[0].id}`} className="group block relative overflow-hidden rounded-[32px] bg-surface-container-high h-full min-h-[600px]">
                   <img 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                    src={(() => { try { return getImageUrl(JSON.parse(newArrivals[0].images)[0]); } catch { return ''; } })() || "https://lh3.googleusercontent.com/aida-public/AB6AXuC1D0r1RX6MMkIw7e0iIoRgwTONdqrszVB-CLQV-LqTyJfUAMM5X0t6hIyH2hWhLTw0_vzy911OfVsj_tcZ7pg8QDhBNo5wf5moxFx2VbS0wR5BkpY_EfxwCF5815m5BbJR_kuLZKvN3BwSJqKfGCQtBuKUgt-RTzf9fK6zqg65Diwnd3db4xPsV8950VAMPURRXMhuCHa8wO-2fprYXET4rgwcs4JWG-2rSbLvJKTcXT1peeyzGMTU5dEQlGkg_S8-x5Nn3mbebNOh"}
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+                    src={(() => { try { return getImageUrl(JSON.parse(newArrivals[0].images)[0]); } catch { return ''; } })() || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1920&auto=format&fit=crop"}
                     alt={newArrivals[0].name}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-10 flex flex-col justify-end">
-                    <p className="font-label-caps text-[12px] tracking-widest font-bold text-primary mb-3 uppercase">{newArrivals[0].category?.name || 'CORE COLLECTION'}</p>
-                    <h3 className="font-headline-md text-[40px] leading-tight text-white uppercase mb-2">{newArrivals[0].name}</h3>
-                    <div className="flex justify-between items-end">
-                      <p className="font-body-md text-lg text-white font-medium">${newArrivals[0].price.toFixed(2)}</p>
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/10 to-transparent p-12 flex flex-col justify-end">
+                    <p className="text-label-caps text-primary mb-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">Featured Drop</p>
+                    <h3 className="text-headline-md mb-2">{newArrivals[0].name}</h3>
+                    <div className="flex justify-between items-center mt-4">
+                      <p className="text-body font-medium opacity-60">${newArrivals[0].price.toFixed(2)}</p>
                       <div className="flex gap-2">
-                        {['S', 'M', 'L', 'XL'].map(size => (
-                          <span key={size} className="text-[10px] font-bold border border-white/20 text-white/80 px-2 py-1 uppercase">{size}</span>
+                        {['S', 'M', 'L'].map(size => (
+                          <span key={size} className="w-8 h-8 rounded-full border border-outline/20 flex items-center justify-center text-[10px] opacity-40">{size}</span>
                         ))}
                       </div>
                     </div>
@@ -123,128 +135,108 @@ export default function HomePage() {
               </motion.div>
             )}
 
-            {/* Small Cards */}
+            {/* Small Refined Cards */}
             {newArrivals.slice(1, 4).map((product) => (
               <motion.div variants={fadeInUp} key={product.id}>
-                <Link to={`/product/${product.id}`} className="relative group overflow-hidden bg-surface-container flex flex-col p-5 block h-full hover:bg-surface-container-high transition-colors">
-                  <div className="overflow-hidden mb-6 bg-black aspect-[4/5] relative">
+                <Link to={`/product/${product.id}`} className="group block h-full">
+                  <div className="aspect-[4/5] overflow-hidden rounded-[32px] bg-surface-container mb-6 relative">
                     <img 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                      src={(() => { try { return getImageUrl(JSON.parse(product.images)[0]); } catch { return ''; } })() || "https://lh3.googleusercontent.com/aida-public/AB6AXuAajh-pkNU1Q__SyQGRAQiNZy9dnfOCUYfkd22bW5cBCM-0G3lyDSBuZXIjsBLBqqG9PYPk6C9rAxdCzASSF1BvuzFztF5E5hYrz6Ub82Jd6rz1XrnIKmLTBj4Jypulq1RjJMxzEOBYaXGXUnK8pprpPZ2i4OY6kTom8KR97yWaxhMPLAxM8wtH2mUYqmQd41cYyUTNP5YghkUTBwre0tgUes8LH4xJ0UwlptKXVhMd_yZoonFfVSpOAQIqqFprB3BglpT6aJkyrx2b"}
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+                      src={(() => { try { return getImageUrl(JSON.parse(product.images)[0]); } catch { return ''; } })() || "https://images.unsplash.com/photo-1539109132314-3477524c8945?q=80&w=1920&auto=format&fit=crop"}
                       alt={product.name}
                     />
+                    <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      <div className="w-10 h-10 rounded-full glass flex items-center justify-center shadow-sm">
+                        <span className="material-symbols-outlined text-[18px]">add</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="mt-auto">
-                    <p className="font-label-caps text-[13px] font-bold tracking-wider text-white uppercase truncate mb-2">{product.name}</p>
-                    <div className="flex justify-between items-center mb-3">
-                      <p className="font-body-md text-[15px] text-neutral-400 font-medium">${product.price.toFixed(2)}</p>
-                    </div>
-                    <div className="flex gap-1.5 flex-wrap">
-                      {['S', 'M', 'L', 'XL'].map(size => (
-                        <span key={size} className="text-[9px] font-bold border border-white/10 bg-white/5 text-white/60 px-1.5 py-0.5 uppercase">{size}</span>
-                      ))}
-                    </div>
+                  <div className="px-2">
+                    <p className="text-label-caps text-[10px] opacity-40 mb-2">{product.category?.name || 'CORE'}</p>
+                    <h4 className="text-body font-medium mb-1 group-hover:text-primary transition-colors">{product.name}</h4>
+                    <p className="text-body text-[14px] opacity-60">${product.price.toFixed(2)}</p>
                   </div>
                 </Link>
               </motion.div>
             ))}
 
-            {/* Fallbacks */}
-            {newArrivals.length < 4 && Array.from({ length: 4 - newArrivals.length }).map((_, i) => (
-              <motion.div variants={fadeInUp} key={`fallback-${i}`}>
-                <div className="relative group overflow-hidden bg-surface-container flex flex-col p-5 h-full">
-                  <div className="overflow-hidden mb-6 bg-black aspect-[4/5]">
-                    <img 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuAR05TOhA3wjcdsiYimKp993pr9r-QM0tODUwpP91EgkOuF1MEOjZ_qnoNSItCnWC2zk_hGykN-IJV1qlt_hYe6uVfyRnJkAdfSgNy7Q1r7PVHqtFDMHqE4Vosy4dVyW9EeWnsqWGg1sJUL4dwEww9Hzn1nObz9-7F5Sc_XfIjgzVeugUCR-OYyuGfuCmxoPErtMLDCiq_oPo-ipwU9omtpF6a3jmB4B0Q2GXBBzgjap2GW7HQcyd3ythMwWDzlEmo-YEs93jzLaNc4"
-                      alt="Placeholder"
-                    />
-                  </div>
-                  <div className="mt-auto">
-                    <p className="font-label-caps text-[13px] font-bold tracking-wider text-white uppercase mb-2">CORE CAP / BLK</p>
-                    <div className="flex justify-between items-center mb-3">
-                      <p className="font-body-md text-[15px] text-neutral-400 font-medium">$45.00</p>
-                    </div>
-                    <div className="flex gap-1.5 flex-wrap">
-                      {['ONE SIZE'].map(size => (
-                        <span key={size} className="text-[9px] font-bold border border-white/10 bg-white/5 text-white/60 px-1.5 py-0.5 uppercase">{size}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+            {/* Empty space fallback or promotional card */}
+            {newArrivals.length < 4 && (
+              <motion.div variants={fadeInUp} className="bg-surface-container rounded-[32px] p-10 flex flex-col justify-between border border-outline/5">
+                <h4 className="text-headline-md opacity-20">COMING<br/>SOON</h4>
+                <p className="text-label-caps text-[10px] opacity-40">Drop 02.26</p>
               </motion.div>
-            ))}
+            )}
           </motion.div>
         )}
       </section>
 
-      {/* WhatsApp Promotion Section */}
-      <section className="bg-[#0a0a0a] border-y-[1px] border-white/20 py-32">
-        <div className="max-w-[1440px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-          <motion.div {...fadeInUp} className="order-2 md:order-1">
-            <h2 className="font-headline-lg text-[72px] text-white uppercase mb-8 leading-[1.1]">
-              DIRECT ACCESS.<br/>
-              <span className="text-primary">ORDER VIA WHATSAPP.</span>
+      {/* Refined WhatsApp Section */}
+      <section className="bg-surface py-40 border-y border-outline/5">
+        <div className="max-w-[1280px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
+          <motion.div {...fadeInUp}>
+            <p className="text-label-caps text-primary tracking-[0.2em] mb-6">Concierge Service</p>
+            <h2 className="text-headline-lg mb-8">
+              Personalized<br/>
+              <span className="italic font-light">Direct Access.</span>
             </h2>
-            <p className="font-body-lg text-[18px] text-neutral-400 mb-12 max-w-lg leading-relaxed">
-              Skip the queue. Get real-time stock updates, personalized sizing advice, and exclusive early access to drops via our private WhatsApp line.
+            <p className="text-body text-[18px] opacity-60 mb-12 max-w-lg leading-relaxed">
+              Experience fashion as a conversation. Our dedicated stylists are available via WhatsApp for real-time sizing advice and priority access to limited drops.
             </p>
-            <a className="inline-flex items-center gap-4 bg-primary text-white font-label-caps text-[14px] font-bold tracking-widest px-14 py-6 hover:bg-orange-700 transition-all group" href="https://wa.me/94771758395" target="_blank" rel="noreferrer">
-              START CHAT <span className="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+            <a className="btn-pill btn-pill-primary px-16" href="https://wa.me/94771758395" target="_blank" rel="noreferrer">
+              START CONVERSATION
             </a>
           </motion.div>
           <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-            className="order-1 md:order-2 relative h-[600px]"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2 }}
+            className="relative"
           >
-            <img className="w-full h-full object-cover grayscale opacity-80 border-[1px] border-white/20" alt="Phone" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAACI8E31pej9IYIQOPMCIfnW0GRYowz3sCuB2jp6b2t9oFN3i_PKaSmUlmxpIMxwuCQQOPXMAOooHvppi9N_Sg0k4zvOIH8ZmcAPQSPNHaXLaPsYs67BicjAuQaay1X2ncU0N-NJvuwqd5KDgf3Cp3km0L5hfEn1p-7pXHDFSEr5rOT-QTPYvlOuzMVZ-_9P5qhsQOrIV6vfthc-CLP3SRFlU-ZcuLkCizLbWUm2CGkr9PVBTREDFLTjoSKnK1lQX7Feq3wScKEbLu"/>
-            <div className="absolute bottom-4 right-4 bg-primary p-6 md:p-10 hidden md:block shadow-2xl z-20">
-              <p className="font-headline-md text-[32px] md:text-[40px] text-white uppercase leading-none tracking-tight">+94 77 175 8395</p>
+            <div className="aspect-square rounded-[40px] overflow-hidden shadow-2xl relative z-10">
+              <img className="w-full h-full object-cover" alt="Concierge" src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=2040&auto=format&fit=crop"/>
             </div>
+            {/* Soft decorative elements */}
+            <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-primary/20 blur-[100px] rounded-full z-0"></div>
+            <div className="absolute -top-10 -left-10 w-48 h-48 bg-outline/10 blur-[80px] rounded-full z-0"></div>
           </motion.div>
         </div>
       </section>
 
-      {/* Editorial / Community */}
-      <section className="max-w-[1440px] mx-auto px-6 py-32">
-        <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <motion.div variants={fadeInUp} className="relative bg-black h-[700px] group overflow-hidden">
-            <img className="w-full h-full object-cover opacity-60 transition-all duration-1000 group-hover:opacity-100 group-hover:scale-105" alt="Editorial" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqZ85hQexVBUSHPWI73A4WlO_isuyzha_LuW8ODmJdO_j-QlQTSDNpxrj9XvDSxlEUqPUeyuDKB3pDt-JRuwKfQRt6qTbUi7T0KoTcY1Q6AKRp9v9GpEW09QAEIBLh1zTAkZnuXZDeUJ9VUx87gjLJOqnMq--tuAfBCFjs67cW8Pokasz0N0B808ocAfPE6jorr79qiShyTx4-kb1Lsk-GrtGSDR9-trI8dIM9Oeh57j2i1dUoRNa0NhbSZH6cY-L77ZcEQ79zrXDp"/>
-            <div className="absolute inset-0 p-12 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent">
-              <p className="font-label-caps text-[13px] font-bold tracking-widest text-primary mb-3">EDITORIAL 001</p>
-              <h4 className="font-headline-md text-[48px] leading-none text-white uppercase">URBAN KINETICS</h4>
-            </div>
-          </motion.div>
-          <motion.div variants={fadeInUp} className="relative bg-black h-[700px] group overflow-hidden">
-            <img className="w-full h-full object-cover opacity-60 transition-all duration-1000 group-hover:opacity-100 group-hover:scale-105" alt="Craftsmanship" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHmohVGyzOSLWWB_Vv5HPdN6U9XtsrDiXcmahr8Ck-RwWGsIHjsTB2JyndQGR0VweqNvcBWdBDXsm03W3XoYp4fUden-IrMCAuorysk-uIas06kB8uTnr7ZOLHiKM5-iw7SatWLsoKBCvTsCMbGwrMZx0-FbQqvI_klOjOtRzTQCZlMcpzASH5uBwKZwLGkflG-r--Y9sL-6iN4RfhBb-CpTIheQ-gTCuX2qy-rMqYdvtj9eyHOuVQL7acxPYive6MsRNNaCSx0PUs"/>
-            <div className="absolute inset-0 p-12 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent">
-              <p className="font-label-caps text-[13px] font-bold tracking-widest text-primary mb-3">CRAFTSMANSHIP</p>
-              <h4 className="font-headline-md text-[48px] leading-none text-white uppercase">ENGINEERED SPEED</h4>
-            </div>
-          </motion.div>
-          <motion.div variants={fadeInUp} className="relative bg-black h-[700px] group overflow-hidden">
-            <img className="w-full h-full object-cover opacity-60 transition-all duration-1000 group-hover:opacity-100 group-hover:scale-105" alt="Community" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfSi8jLUXDsgcBlorb90f5ZC8AH03LAMoniD4D8Vdl2siaDE13vxDUhah0dnp_W0m0EzpnOoI3u4t_wn-JHGvKlHalBCtH1r0DQHo-7W8QWKr0cqDFfnpr_ljTKECx3JXCtczmaUIfK-im0bfsdziUCHN-omqlkG7jFaQ1ejA6f2xdv7k7_KEdsMKpNFuwoLlLT5Bj-UmlhOyi8PcDRwrEgeFiQ9BHhzUa3hc0osVFuwyZTRrV6AoAJvfvlb0n54xYuj9Xze2AIMgr"/>
-            <div className="absolute inset-0 p-12 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent">
-              <p className="font-label-caps text-[13px] font-bold tracking-widest text-primary mb-3">COMMUNITY</p>
-              <h4 className="font-headline-md text-[48px] leading-none text-white uppercase">GLOBAL NETWORK</h4>
-            </div>
-          </motion.div>
+      {/* Community / Lifestyle Grid */}
+      <section className="max-w-[1440px] mx-auto px-6 py-40">
+        <div className="text-center mb-24">
+          <p className="text-label-caps tracking-[0.3em] mb-4 opacity-40">The Lifestyle</p>
+          <h2 className="text-headline-lg italic font-light">Community Kinetics</h2>
+        </div>
+        <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          {[
+            { tag: "Editorial", title: "Urban Softness", img: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop" },
+            { tag: "Makers", title: "Mindful Design", img: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=2048&auto=format&fit=crop" },
+            { tag: "People", title: "Global Movement", img: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop" }
+          ].map((item, idx) => (
+            <motion.div variants={fadeInUp} key={idx} className="group cursor-pointer">
+              <div className="aspect-[3/4] overflow-hidden rounded-[32px] mb-8">
+                <img className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={item.title} src={item.img}/>
+              </div>
+              <p className="text-label-caps text-[10px] opacity-40 mb-3">{item.tag}</p>
+              <h4 className="text-headline-md text-2xl">{item.title}</h4>
+            </motion.div>
+          ))}
         </motion.div>
       </section>
 
-      {/* Floating Action Button (Home Relevant Only) */}
+      {/* Floating Modern Action Button */}
       <motion.div 
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1, duration: 0.5 }}
-        className="fixed bottom-24 right-6 md:bottom-12 md:right-12 z-40"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.5 }}
+        className="fixed bottom-12 right-12 z-40"
       >
-        <Link to="/shop?filter=new" className="bg-primary text-white p-5 shadow-[0_0_40px_rgba(255,86,45,0.4)] hover:bg-orange-600 active:scale-90 transition-all flex items-center justify-center group overflow-hidden">
-          <span className="material-symbols-outlined text-2xl group-hover:hidden">bolt</span>
-          <span className="font-label-caps text-[12px] font-bold tracking-widest hidden group-hover:block whitespace-nowrap px-4">NEW DROPS LIVE</span>
+        <Link to="/shop?filter=new" className="glass p-6 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-4 group">
+          <span className="material-symbols-outlined text-on-background">auto_awesome</span>
+          <span className="text-label-caps text-[10px] pr-4 max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 whitespace-nowrap">Explore New Season</span>
         </Link>
       </motion.div>
     </div>
