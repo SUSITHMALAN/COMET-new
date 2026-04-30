@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { CheckCircle, XCircle, Info } from 'lucide-react';
 import { useToasts } from '../../hooks/useToast';
 
 export default function Toast() {
@@ -13,13 +12,26 @@ export default function Toast() {
   if (!toasts.length) return null;
 
   return (
-    <div className="toast-container">
+    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-3">
       {toasts.map(t => (
-        <div key={t.id} className={`toast toast-${t.type}`}>
-          {t.type === 'success' && <CheckCircle size={18} color="var(--success)" />}
-          {t.type === 'error' && <XCircle size={18} color="var(--error)" />}
-          {t.type === 'info' && <Info size={18} color="#3b82f6" />}
-          {t.message}
+        <div 
+          key={t.id} 
+          className={`flex items-center gap-3 p-4 bg-surface-container border-2 min-w-[280px] shadow-2xl fade-in ${
+            t.type === 'success' ? 'border-secondary' : 
+            t.type === 'error' ? 'border-primary' : 
+            'border-white'
+          }`}
+        >
+          <span className={`material-symbols-outlined text-xl ${
+            t.type === 'success' ? 'text-secondary' : 
+            t.type === 'error' ? 'text-primary' : 
+            'text-white'
+          }`}>
+            {t.type === 'success' ? 'check_circle' : 
+             t.type === 'error' ? 'error' : 
+             'info'}
+          </span>
+          <span className="text-label-caps text-white">{t.message}</span>
         </div>
       ))}
     </div>

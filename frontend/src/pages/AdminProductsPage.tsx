@@ -223,13 +223,17 @@ export default function AdminProductsPage() {
                 </label>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {[
+                {([
                   { key: 'is_featured', label: 'Featured Product' },
                   { key: 'is_new', label: 'New Arrival' },
                   ...(editing ? [{ key: 'is_active', label: 'Active (visible)' }] : []),
-                ].map(({ key, label }) => (
+                ] as const).map(({ key, label }) => (
                   <label key={key} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: '14px' }}>
-                    <input type="checkbox" checked={form[key as keyof typeof form] as boolean} onChange={e => setForm(f => ({ ...f, [key]: e.target.checked }))} />
+                    <input 
+                      type="checkbox" 
+                      checked={!!form[key as keyof typeof form]} 
+                      onChange={e => setForm(f => ({ ...f, [key]: e.target.checked }))} 
+                    />
                     {label}
                   </label>
                 ))}
