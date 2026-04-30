@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { productsApi, getImageUrl } from '../api';
 import { Product } from '../types';
+import ProductCard from '../components/ui/ProductCard';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -23,11 +24,18 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([
-      productsApi.getAll({ is_new: true, limit: 4 }),
-    ]).then(([newRes]) => {
-      setNewArrivals(newRes.data);
-    }).finally(() => setLoading(false));
+    productsApi.getAll({ is_new: true, limit: 8 })
+      .then(res => {
+        if (res.data.length < 4) {
+          // If too few new items, just get all products
+          return productsApi.getAll({ limit: 8 });
+        }
+        return res;
+      })
+      .then(res => {
+        setNewArrivals(res.data);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -111,25 +119,9 @@ export default function HomePage() {
             <div className="w-8 h-8 border-2 border-rose-200 border-t-rose-400 rounded-full animate-spin"></div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
             {newArrivals.map((product) => (
-              <Link to={`/product/${product.id}`} key={product.id} className="flex flex-col group cursor-pointer">
-                <div className="relative overflow-hidden rounded-xl aspect-[4/5] mb-4">
-                  <img 
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                    alt={product.name}
-                    src={(() => { try { return getImageUrl(JSON.parse(product.images)[0]); } catch { return ''; } })() || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1920&auto=format&fit=crop"}
-                  />
-                  <button className="absolute top-4 right-4 bg-white/80 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className="material-symbols-outlined text-rose-400 text-xl">favorite</span>
-                  </button>
-                  <div className="absolute bottom-0 left-0 right-0 glass-card p-4 transition-transform translate-y-full group-hover:translate-y-0 duration-300">
-                    <button className="w-full py-2 bg-primary-container text-on-primary-container rounded-lg text-label-sm">Quick Add</button>
-                  </div>
-                </div>
-                <h4 className="text-headline-md text-lg text-on-background mb-1">{product.name}</h4>
-                <p className="text-rose-400 text-label-sm">${product.price.toFixed(2)}</p>
-              </Link>
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         )}
