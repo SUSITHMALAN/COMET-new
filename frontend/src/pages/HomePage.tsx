@@ -31,214 +31,126 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="bg-background text-on-background">
+    <div className="bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container">
       {/* Hero Section */}
-      <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-surface-container-low pt-20">
-        <motion.div 
-          initial={{ scale: 1.02, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0 z-0"
-        >
-          {/* Subtle elegant image or light gradient */}
+      <header className="relative h-[921px] flex items-center pt-24 overflow-hidden">
+        <div className="absolute inset-0 z-0">
           <img 
-            className="w-full h-full object-cover opacity-20 grayscale-0" 
-            alt="Hero background"
-            src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop"
+            className="w-full h-full object-cover" 
+            alt="Hero" 
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZjtlcZIn742dqDm7v4QJ2EJ9bwgGdGIQAHHRXKk-kXJMgZX4VgByNF0ZSwGmwFrcc4mYp14Ng3z6nFxwRGbyZrExm3wO0jPOFZIZjN8jYDwJ3FBrW8xUn9iEGRZjeqqMJKmm7pSCJV0vbzMv8WeMS-NT3Y6E8ELtHiNB_alYF9JeNgrgYqDKGewMa57L6WHdwNMvF_Wdpa97BMoWQvtwoPTiwUjBTgxeh1GYd0GwWaIyMZWEOVC7lzhfK4vadidwo2Wi1Q32Crp7D"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/20 to-background"></div>
-        </motion.div>
-        
-        <div className="relative z-10 text-center px-6 max-w-[1000px]">
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-label-caps tracking-[0.3em] mb-6 opacity-60"
-          >
-            Spring / Summer 2026 Collection
-          </motion.p>
-          <motion.h1 
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="text-headline-xl mb-10"
-          >
-            Refined Motion.<br />
-            <span className="italic font-light">Defined Style.</span>
-          </motion.h1>
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-6 justify-center"
-          >
-            <Link to="/shop?filter=new" className="btn-pill btn-pill-primary">
-              EXPLORE NEW DROPS
+          <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/20 to-transparent"></div>
+        </div>
+        <div className="relative z-10 px-16 max-w-3xl animate-fade-in-slide">
+          <span className="text-label-sm text-primary uppercase tracking-[0.2em] mb-4 block">Spring Collection 2024</span>
+          <h1 className="text-headline-xl mb-6 leading-tight">Woven with <br/><span className="italic font-light text-rose-400">Pure Imagination</span></h1>
+          <p className="text-body-lg text-secondary mb-10 max-w-lg">Discover curated garments designed to celebrate the magic of childhood. Each piece is crafted with the finest natural fabrics and a touch of vintage charm.</p>
+          <div className="flex gap-4">
+            <Link to="/shop" className="bg-primary-container text-on-primary-container px-10 py-4 rounded-full text-label-sm hover:opacity-90 transition-opacity shadow-soft flex items-center justify-center">
+              Shop the Look
             </Link>
-            <Link to="/shop" className="btn-pill btn-pill-outline">
-              VIEW LOOKBOOK
+            <Link to="/lookbook" className="glass border border-white/40 px-10 py-4 rounded-full text-label-sm text-primary hover:bg-white/60 transition-all flex items-center justify-center">
+              View Lookbook
             </Link>
-          </motion.div>
+          </div>
+        </div>
+      </header>
+
+      {/* Categories Bento Grid */}
+      <section className="px-16 py-24 bg-surface">
+        <div className="flex justify-between items-end mb-12">
+          <div>
+            <h2 className="text-headline-lg text-on-background mb-2">Curated Collections</h2>
+            <p className="text-secondary">Explore our most loved styles for every stage.</p>
+          </div>
+          <Link to="/shop" className="text-rose-400 text-label-sm border-b border-rose-200 hover:text-rose-600 transition-colors">
+            Browse All
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter h-[600px]">
+          <div className="md:col-span-2 relative group overflow-hidden rounded-xl">
+            <img 
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+              alt="Newborn" 
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpbMZSj_ipyIH9zqeISCNOIjycEyPWP4l6Y_AnQyv8uMPopw-UkUdwIwipITQxtbVRgC-pgV4xo4irVetJoVedMDEMq-w9q0P2dW2k_y5JRjChzuc5M312WH77Yb3ukIfcHLUN1NO9ioBqsCFMoH-xxRNrjCa9_mcxWk4DXEaPjuyLKe_5J0qr60WYcMW_wdgvfECX0secM4gWQ_7TlpBCzN--tdnc2qU39wuNzifcKzIr-_S2DGT5ZeLI2yYKft8UzuvZdY8XA7iO"
+            />
+            <div className="absolute bottom-6 left-6 right-6 glass-card p-6 rounded-lg transition-transform duration-300 group-hover:-translate-y-2">
+              <h3 className="text-headline-md text-on-background">Newborn Essentials</h3>
+              <p className="text-sm text-secondary">Organic cotton and softest knits.</p>
+            </div>
+          </div>
+          <div className="relative group overflow-hidden rounded-xl">
+            <img 
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+              alt="Details" 
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqixIosGHL67pgppqmj6yWGDADIiJ3hW8IS9jw6JXyy9OV5OMqaT_PMYZ9XhHAuCyJ4Y8e1_1wqF8MHsrgR4oA33MQzV_cW1OU9E4T2zyuAMOIfKDUoXH4CpUXX4zZpwgYMBVQ7rBz-P8JLNAg_VGe9SKlvQTkoxAvu3Q92sM6NMc0r_1N0PWMyAOhBbnKiSWxArHNwx7V5PS_uFk_Tn-NMHIzWL27iEvDB812lOSyMR0-Wh2KVE-eRG_BlA-I_6q4KKsLRVC-Tt0X"
+            />
+            <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <span className="glass px-6 py-2 rounded-full text-white text-label-sm">Explore Occasion</span>
+            </div>
+          </div>
+          <div className="relative group overflow-hidden rounded-xl bg-rose-50 flex flex-col items-center justify-center p-8 text-center border border-rose-100">
+            <span className="material-symbols-outlined text-4xl text-rose-300 mb-4">stars</span>
+            <h3 className="text-headline-md text-on-background mb-2">Gift Sets</h3>
+            <p className="text-secondary text-sm mb-6">Perfectly packaged surprises for the little ones in your life.</p>
+            <button className="bg-white px-6 py-2 rounded-full text-label-sm text-primary shadow-sm hover:shadow-md transition-shadow">Create a Box</button>
+          </div>
         </div>
       </section>
 
-      {/* Ticker / Marquee - Refined for light mode */}
-      <div className="bg-surface-container py-8 border-y border-outline/10 overflow-hidden whitespace-nowrap relative z-20">
-        <div className="inline-block animate-[marquee_30s_linear_infinite]">
-          <span className="text-label-caps text-[14px] opacity-40 mx-12 uppercase">
-            Curated Performance — Conscious Craftsmanship — Timeless Kinetics — Global Delivery — Curated Performance — Conscious Craftsmanship — Timeless Kinetics — Global Delivery
-          </span>
+      {/* New Arrivals */}
+      <section className="px-16 py-24">
+        <div className="mb-12 text-center">
+          <h2 className="text-headline-lg text-on-background">New Arrivals</h2>
+          <div className="w-12 h-0.5 bg-rose-200 mx-auto mt-4"></div>
         </div>
-      </div>
-
-      {/* New Arrivals Bento Grid */}
-      <section className="relative z-10 max-w-[1440px] mx-auto px-6 py-40">
-        <motion.div {...fadeInUp} className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8">
-          <div>
-            <p className="text-label-caps text-primary tracking-[0.2em] mb-4">Latest Additions</p>
-            <h2 className="text-headline-lg">NEW ARRIVALS</h2>
-          </div>
-          <Link to="/shop?filter=new" className="text-label-caps tracking-[0.1em] border-b border-on-background/20 pb-1 hover:border-primary transition-all">
-            Browse All Collection
-          </Link>
-        </motion.div>
         
         {loading ? (
-           <div className="flex justify-center items-center py-24">
-             <div className="spinner"></div>
-           </div>
+          <div className="flex justify-center py-12">
+            <div className="w-8 h-8 border-2 border-rose-200 border-t-rose-400 rounded-full animate-spin"></div>
+          </div>
         ) : (
-          <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-4 gap-10">
-            {/* Large Hero Card */}
-            {newArrivals.length > 0 && (
-              <motion.div variants={fadeInUp} className="md:col-span-2 md:row-span-2">
-                <Link to={`/product/${newArrivals[0].id}`} className="group block relative overflow-hidden rounded-[32px] bg-surface-container-high h-full min-h-[600px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+            {newArrivals.map((product) => (
+              <Link to={`/product/${product.id}`} key={product.id} className="flex flex-col group cursor-pointer">
+                <div className="relative overflow-hidden rounded-xl aspect-[4/5] mb-4">
                   <img 
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
-                    src={(() => { try { return getImageUrl(JSON.parse(newArrivals[0].images)[0]); } catch { return ''; } })() || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1920&auto=format&fit=crop"}
-                    alt={newArrivals[0].name}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                    alt={product.name}
+                    src={(() => { try { return getImageUrl(JSON.parse(product.images)[0]); } catch { return ''; } })() || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1920&auto=format&fit=crop"}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/10 to-transparent p-12 flex flex-col justify-end">
-                    <p className="text-label-caps text-primary mb-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">Featured Drop</p>
-                    <h3 className="text-headline-md mb-2">{newArrivals[0].name}</h3>
-                    <div className="flex justify-between items-center mt-4">
-                      <p className="text-body font-medium opacity-60">${newArrivals[0].price.toFixed(2)}</p>
-                      <div className="flex gap-2">
-                        {['S', 'M', 'L'].map(size => (
-                          <span key={size} className="w-8 h-8 rounded-full border border-outline/20 flex items-center justify-center text-[10px] opacity-40">{size}</span>
-                        ))}
-                      </div>
-                    </div>
+                  <button className="absolute top-4 right-4 bg-white/80 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="material-symbols-outlined text-rose-400 text-xl">favorite</span>
+                  </button>
+                  <div className="absolute bottom-0 left-0 right-0 glass-card p-4 transition-transform translate-y-full group-hover:translate-y-0 duration-300">
+                    <button className="w-full py-2 bg-primary-container text-on-primary-container rounded-lg text-label-sm">Quick Add</button>
                   </div>
-                </Link>
-              </motion.div>
-            )}
-
-            {/* Small Refined Cards */}
-            {newArrivals.slice(1, 4).map((product) => (
-              <motion.div variants={fadeInUp} key={product.id}>
-                <Link to={`/product/${product.id}`} className="group block h-full">
-                  <div className="aspect-[4/5] overflow-hidden rounded-[32px] bg-surface-container mb-6 relative">
-                    <img 
-                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
-                      src={(() => { try { return getImageUrl(JSON.parse(product.images)[0]); } catch { return ''; } })() || "https://images.unsplash.com/photo-1539109132314-3477524c8945?q=80&w=1920&auto=format&fit=crop"}
-                      alt={product.name}
-                    />
-                    <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                      <div className="w-10 h-10 rounded-full glass flex items-center justify-center shadow-sm">
-                        <span className="material-symbols-outlined text-[18px]">add</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-2">
-                    <p className="text-label-caps text-[10px] opacity-40 mb-2">{product.category?.name || 'CORE'}</p>
-                    <h4 className="text-body font-medium mb-1 group-hover:text-primary transition-colors">{product.name}</h4>
-                    <p className="text-body text-[14px] opacity-60">${product.price.toFixed(2)}</p>
-                  </div>
-                </Link>
-              </motion.div>
+                </div>
+                <h4 className="text-headline-md text-lg text-on-background mb-1">{product.name}</h4>
+                <p className="text-rose-400 text-label-sm">${product.price.toFixed(2)}</p>
+              </Link>
             ))}
-
-            {/* Empty space fallback or promotional card */}
-            {newArrivals.length < 4 && (
-              <motion.div variants={fadeInUp} className="bg-surface-container rounded-[32px] p-10 flex flex-col justify-between border border-outline/5">
-                <h4 className="text-headline-md opacity-20">COMING<br/>SOON</h4>
-                <p className="text-label-caps text-[10px] opacity-40">Drop 02.26</p>
-              </motion.div>
-            )}
-          </motion.div>
+          </div>
         )}
       </section>
 
-      {/* Refined WhatsApp Section */}
-      <section className="bg-surface py-40 border-y border-outline/5">
-        <div className="max-w-[1280px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
-          <motion.div {...fadeInUp}>
-            <p className="text-label-caps text-primary tracking-[0.2em] mb-6">Concierge Service</p>
-            <h2 className="text-headline-lg mb-8">
-              Personalized<br/>
-              <span className="italic font-light">Direct Access.</span>
-            </h2>
-            <p className="text-body text-[18px] opacity-60 mb-12 max-w-lg leading-relaxed">
-              Experience fashion as a conversation. Our dedicated stylists are available via WhatsApp for real-time sizing advice and priority access to limited drops.
-            </p>
-            <a className="btn-pill btn-pill-primary px-16" href="https://wa.me/94771758395" target="_blank" rel="noreferrer">
-              START CONVERSATION
-            </a>
-          </motion.div>
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2 }}
-            className="relative"
-          >
-            <div className="aspect-square rounded-[40px] overflow-hidden shadow-2xl relative z-10">
-              <img className="w-full h-full object-cover" alt="Concierge" src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=2040&auto=format&fit=crop"/>
-            </div>
-            {/* Soft decorative elements */}
-            <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-primary/20 blur-[100px] rounded-full z-0"></div>
-            <div className="absolute -top-10 -left-10 w-48 h-48 bg-outline/10 blur-[80px] rounded-full z-0"></div>
-          </motion.div>
+      {/* Seasonal Favorites / Promo */}
+      <section className="mx-16 my-24 rounded-[40px] overflow-hidden relative min-h-[500px] flex items-center">
+        <div className="absolute inset-0 z-0">
+          <img 
+            className="w-full h-full object-cover" 
+            alt="Summer" 
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQy1Q6UIobff2Jr-EOEnv4kMMXu2aTl-XxqrIcllUClV4f6-bhPtT2fADc6J18hgfie1zj0HSPKLcC7FUhtOmtE040LwcP6OU_4l_6_GdwNVedYMg3iPIFpbH0l3DvzK1pbMRnmM02npRxGQBQ5AXAEUQHsnT3Bj_guSwJfCSmqKUjgrvqhDWkMxvs-oS7kQxM1DHeVy-YTxjjADVJOYDDwbroahjNG3LZlJ--X21PPsHfizAirrdS6zUxn-qgX0csa86F-Qkr4drW"
+          />
+          <div className="absolute inset-0 bg-primary/30 mix-blend-multiply"></div>
+        </div>
+        <div className="relative z-10 px-16 text-white max-w-2xl">
+          <h2 className="text-headline-xl mb-6">Seasonal Favorites</h2>
+          <p className="text-body-lg mb-8 text-white/90">Our Summer Garden collection has arrived. Lightweight linens and sun-ready silhouettes designed for adventures in the tall grass.</p>
+          <button className="glass px-12 py-4 rounded-full text-label-sm text-white border border-white/30 hover:bg-white/20 transition-all uppercase tracking-widest">Explore Summer</button>
         </div>
       </section>
-
-      {/* Community / Lifestyle Grid */}
-      <section className="max-w-[1440px] mx-auto px-6 py-40">
-        <div className="text-center mb-24">
-          <p className="text-label-caps tracking-[0.3em] mb-4 opacity-40">The Lifestyle</p>
-          <h2 className="text-headline-lg italic font-light">Community Kinetics</h2>
-        </div>
-        <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {[
-            { tag: "Editorial", title: "Urban Softness", img: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop" },
-            { tag: "Makers", title: "Mindful Design", img: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=2048&auto=format&fit=crop" },
-            { tag: "People", title: "Global Movement", img: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop" }
-          ].map((item, idx) => (
-            <motion.div variants={fadeInUp} key={idx} className="group cursor-pointer">
-              <div className="aspect-[3/4] overflow-hidden rounded-[32px] mb-8">
-                <img className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={item.title} src={item.img}/>
-              </div>
-              <p className="text-label-caps text-[10px] opacity-40 mb-3">{item.tag}</p>
-              <h4 className="text-headline-md text-2xl">{item.title}</h4>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* Floating Modern Action Button */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5 }}
-        className="fixed bottom-12 right-12 z-40"
-      >
-        <Link to="/shop?filter=new" className="glass p-6 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-4 group">
-          <span className="material-symbols-outlined text-on-background">auto_awesome</span>
-          <span className="text-label-caps text-[10px] pr-4 max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 whitespace-nowrap">Explore New Season</span>
-        </Link>
-      </motion.div>
     </div>
   );
 }
