@@ -103,12 +103,43 @@ input, textarea, select {
   line-height: 1;
 }
 
+.text-headline-md {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
 .text-label-caps {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+.font-label-caps {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-headline-md {
+  font-family: 'Bebas Neue', sans-serif;
+}
+
+.font-headline-lg {
+  font-family: 'Bebas Neue', sans-serif;
+}
+
+.font-headline-xl {
+  font-family: 'Bebas Neue', sans-serif;
+}
+
+.font-body-md {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-body-lg {
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 /* Buttons */

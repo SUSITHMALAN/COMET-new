@@ -1,9 +1,11 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Toast from './components/ui/Toast';
 import AdminLayout from './components/admin/AdminLayout';
+import PageWrapper from './components/layout/PageWrapper';
 import { useAuthStore } from './store';
 
 // Public pages
@@ -35,7 +37,7 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
 // Public layout wrapper
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen relative">
       <Navbar />
       <main className="flex-1">
         {children}
@@ -45,18 +47,19 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
+function AnimatedRoutes() {
+  const location = useLocation();
+
   return (
-    <BrowserRouter>
-      <Toast />
-      <Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
         {/* Public Routes */}
-        <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
-        <Route path="/shop" element={<PublicLayout><ShopPage /></PublicLayout>} />
-        <Route path="/product/:id" element={<PublicLayout><ProductDetailPage /></PublicLayout>} />
-        <Route path="/cart" element={<PublicLayout><CartPage /></PublicLayout>} />
-        <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
-        <Route path="/signup" element={<PublicLayout><SignupPage /></PublicLayout>} />
+        <Route path="/" element={<PublicLayout><PageWrapper><HomePage /></PageWrapper></PublicLayout>} />
+        <Route path="/shop" element={<PublicLayout><PageWrapper><ShopPage /></PageWrapper></PublicLayout>} />
+        <Route path="/product/:id" element={<PublicLayout><PageWrapper><ProductDetailPage /></PageWrapper></PublicLayout>} />
+        <Route path="/cart" element={<PublicLayout><PageWrapper><CartPage /></PageWrapper></PublicLayout>} />
+        <Route path="/login" element={<PublicLayout><PageWrapper><LoginPage /></PageWrapper></PublicLayout>} />
+        <Route path="/signup" element={<PublicLayout><PageWrapper><SignupPage /></PageWrapper></PublicLayout>} />
 
         {/* Admin Login */}
         <Route path="/admin/login" element={<AdminLoginPage />} />
@@ -81,6 +84,15 @@ export default function App() {
         {/* Catch all */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+    </AnimatePresence>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Toast />
+      <AnimatedRoutes />
     </BrowserRouter>
   );
 }
