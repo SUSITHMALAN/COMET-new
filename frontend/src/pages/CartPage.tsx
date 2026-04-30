@@ -55,7 +55,7 @@ export default function CartPage() {
         <div className="w-48 h-48 bg-rose-50 rounded-full flex items-center justify-center mb-10 border border-rose-100 shadow-soft">
           <span className="material-symbols-outlined text-[64px] text-rose-200">shopping_bag</span>
         </div>
-        <h2 className="text-headline-lg text-primary mb-4">Your bag is empty</h2>
+        <h2 className="text-headline-lg text-primary mb-4 font-serif">Your bag is empty</h2>
         <p className="text-secondary opacity-70 mb-12 max-w-sm text-center italic font-light">It seems your collection is awaiting its first beautiful piece.</p>
         <Link to="/shop" className="bg-primary text-white px-12 py-4 rounded-full text-label-sm uppercase tracking-widest shadow-soft hover:opacity-90 transition-opacity">
           Begin Exploring
@@ -65,25 +65,31 @@ export default function CartPage() {
   }
 
   return (
-    <main className="pt-32 pb-20 px-16 max-w-[1440px] mx-auto animate-fade-in-slide">
-      <header className="mb-16">
-        <h1 className="text-headline-xl text-primary mb-2">Your Bag</h1>
-        <div className="flex items-center gap-4 text-label-sm text-secondary">
-          <span>{items.length} {items.length === 1 ? 'Piece' : 'Pieces'} Selected</span>
-          <div className="w-1.5 h-1.5 bg-rose-200 rounded-full"></div>
-          <button onClick={clearCart} className="text-rose-400 hover:text-rose-600 transition-colors">Clear All</button>
+    <main className="pt-32 pb-20 px-16 max-w-[1440px] mx-auto animate-fade-in-slide selection:bg-rose-100">
+      <header className="mb-16 flex justify-between items-end">
+        <div>
+          <span className="text-[10px] text-rose-400 uppercase tracking-[0.3em] font-bold mb-4 block">Selection</span>
+          <h1 className="text-headline-xl text-primary font-serif">Your Cart</h1>
+        </div>
+        <div className="flex flex-col items-end gap-2">
+          <button onClick={clearCart} className="text-[10px] text-rose-300 hover:text-rose-500 uppercase tracking-widest border-b border-rose-100 pb-1 transition-colors">
+            Clear Selection
+          </button>
+          <p className="text-label-sm text-secondary italic opacity-60">
+            {items.length} {items.length === 1 ? 'Piece' : 'Pieces'} Selected
+          </p>
         </div>
       </header>
 
-      <div className="flex flex-col lg:flex-row gap-16">
-        {/* Cart Items */}
-        <div className="flex-1 space-y-10">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-20">
+        {/* Cart Items List */}
+        <div className="lg:col-span-2 space-y-10">
           {items.map(item => (
             <div
               key={`${item.product.id}-${item.size}-${item.color}`}
-              className="group flex gap-10 items-center pb-10 border-b border-rose-50"
+              className="group flex flex-col sm:flex-row gap-10 items-center pb-10 border-b border-rose-50/50"
             >
-              <div className="w-40 aspect-[4/5] rounded-2xl overflow-hidden bg-rose-50/30 border border-rose-100 shadow-sm relative">
+              <div className="w-48 aspect-[4/5] rounded-3xl overflow-hidden bg-rose-50/30 border border-rose-100 shadow-sm relative group-hover:shadow-soft transition-all">
                 {(() => {
                   const imgs = (() => { try { return JSON.parse(item.product.images || '[]'); } catch { return []; } })();
                   return imgs[0] ? (
@@ -96,32 +102,32 @@ export default function CartPage() {
                 })()}
               </div>
 
-              <div className="flex-1">
-                <div className="flex justify-between items-start mb-2">
+              <div className="flex-1 text-center sm:text-left">
+                <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h3 className="text-headline-md text-2xl text-primary group-hover:text-rose-600 transition-colors">{item.product.name}</h3>
-                    <p className="text-label-sm text-secondary uppercase tracking-widest mt-1 opacity-60">{item.product.category?.name || 'Collection'}</p>
+                    <p className="text-[9px] text-rose-400 uppercase tracking-widest mb-1 font-bold">{item.product.category?.name || 'Collection'}</p>
+                    <h3 className="text-headline-md text-3xl text-primary font-serif mb-1">{item.product.name}</h3>
+                    <p className="text-label-sm text-secondary/60 uppercase tracking-tighter">
+                      Size: <span className="text-primary font-bold">{item.size}</span> / Color: <span className="text-primary font-bold">{item.color}</span>
+                    </p>
                   </div>
                   <button
                     onClick={() => removeItem(item.product.id, item.size, item.color)}
-                    className="text-rose-300 hover:text-error transition-colors"
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-rose-200 hover:bg-rose-50 hover:text-error transition-all"
                   >
-                    <span className="material-symbols-outlined text-[20px]">delete</span>
+                    <span className="material-symbols-outlined">delete</span>
                   </button>
                 </div>
 
-                <div className="flex gap-6 mt-6 items-center">
-                  <div className="px-4 py-2 bg-rose-50/50 border border-rose-100 rounded-full text-[10px] font-bold text-primary uppercase tracking-tighter">
-                    {item.size} / {item.color}
-                  </div>
-                  <div className="flex items-center gap-4 glass-card px-2 py-1 rounded-full border border-rose-100">
+                <div className="flex flex-col sm:flex-row justify-between items-center mt-10 pt-6 border-t border-rose-50/30 gap-6">
+                  <div className="flex items-center gap-6 glass-card px-3 py-1.5 rounded-full border border-rose-100">
                     <button
                       onClick={() => updateQuantity(item.product.id, item.size, item.color, item.quantity - 1)}
                       className="w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-white transition-colors"
                     >
                       <span className="material-symbols-outlined text-sm">remove</span>
                     </button>
-                    <span className="w-6 text-center font-medium text-primary text-sm">{item.quantity}</span>
+                    <span className="w-8 text-center font-bold text-primary">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item.product.id, item.size, item.color, item.quantity + 1)}
                       className="w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-white transition-colors"
@@ -129,53 +135,60 @@ export default function CartPage() {
                       <span className="material-symbols-outlined text-sm">add</span>
                     </button>
                   </div>
-                </div>
-
-                <div className="mt-8 flex justify-between items-end">
-                  <span className="text-body-md text-secondary italic">Per piece: ${item.product.price}</span>
-                  <span className="text-2xl font-light text-rose-400">${(item.product.price * item.quantity).toFixed(2)}</span>
+                  
+                  <div className="text-right">
+                    <span className="text-body-md text-secondary italic block mb-1">Subtotal</span>
+                    <span className="text-3xl font-light text-rose-400">${(item.product.price * item.quantity).toFixed(2)}</span>
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Checkout Summary */}
-        <div className="w-full lg:w-[450px]">
-          <div className="glass-card p-10 rounded-3xl border border-rose-100 shadow-soft sticky top-32">
-            <h2 className="text-headline-md text-primary mb-10 text-center">Summary</h2>
+        {/* Order Summary Sidebar */}
+        <div className="lg:col-span-1">
+          <div className="glass-card p-12 rounded-[40px] border border-rose-100 shadow-soft sticky top-32">
+            <h2 className="text-headline-md text-primary font-serif mb-12 text-center border-b border-rose-50 pb-6">Order Summary</h2>
             
-            <div className="space-y-6 mb-12">
-              <div className="flex justify-between text-body-md text-secondary">
-                <span>Subtotal</span>
-                <span className="font-medium">${totalPrice().toFixed(2)}</span>
+            <div className="space-y-8 mb-12">
+              <div className="space-y-4">
+                {items.map(item => (
+                  <div key={`${item.product.id}-${item.size}-${item.color}`} className="flex justify-between text-label-sm text-secondary items-baseline">
+                    <span className="font-light italic line-clamp-1 flex-1 pr-4">{item.product.name} × {item.quantity}</span>
+                    <span className="font-medium text-primary">${(item.product.price * item.quantity).toFixed(2)}</span>
+                  </div>
+                ))}
               </div>
-              <div className="flex justify-between text-body-md text-secondary">
-                <span>Shipping</span>
-                <span className="font-medium text-rose-400 italic">Complimentary</span>
-              </div>
-              <div className="pt-6 border-t border-rose-100 flex justify-between items-end">
-                <span className="text-label-sm text-primary uppercase tracking-widest font-bold">Total</span>
-                <span className="text-4xl font-light text-rose-400">${totalPrice().toFixed(2)}</span>
+              
+              <div className="space-y-4 pt-8 border-t border-rose-50">
+                <div className="flex justify-between text-body-md text-secondary">
+                  <span>Shipping</span>
+                  <span className="font-medium text-rose-400 italic">Complimentary</span>
+                </div>
+                <div className="flex justify-between items-end">
+                  <span className="text-label-sm text-primary uppercase tracking-[0.2em] font-bold">Estimated Total</span>
+                  <span className="text-4xl font-light text-rose-400">${totalPrice().toFixed(2)}</span>
+                </div>
               </div>
             </div>
 
             {!checkoutMode ? (
               <button 
                 onClick={() => setCheckoutMode(true)}
-                className="w-full bg-primary text-white py-5 rounded-full text-label-sm uppercase tracking-widest shadow-soft hover:opacity-90 transition-all active:scale-95"
+                className="w-full bg-primary text-white py-6 rounded-full text-label-sm uppercase tracking-[0.2em] font-bold shadow-soft hover:opacity-90 hover:-translate-y-0.5 transition-all active:scale-95"
               >
                 Proceed to Checkout
               </button>
             ) : (
-              <div className="space-y-6 animate-fade-in-slide">
+              <div className="space-y-8 animate-fade-in-slide">
                 <div className="space-y-4">
                   <input
                     type="text"
                     placeholder="Full Name"
                     value={form.name}
                     onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                    className="w-full bg-white/50 border border-rose-100 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-rose-200"
+                    className="w-full bg-white/50 border border-rose-100 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-rose-200 transition-all"
                   />
                   <div className="grid grid-cols-2 gap-4">
                     <input
@@ -183,21 +196,21 @@ export default function CartPage() {
                       placeholder="Phone"
                       value={form.phone}
                       onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-                      className="w-full bg-white/50 border border-rose-100 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-rose-200"
+                      className="w-full bg-white/50 border border-rose-100 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-rose-200 transition-all"
                     />
                     <input
                       type="email"
                       placeholder="Email"
                       value={form.email}
                       onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                      className="w-full bg-white/50 border border-rose-100 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-rose-200"
+                      className="w-full bg-white/50 border border-rose-100 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-rose-200 transition-all"
                     />
                   </div>
                   <textarea
                     placeholder="Shipping Address"
                     value={form.address}
                     onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
-                    className="w-full bg-white/50 border border-rose-100 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-rose-200"
+                    className="w-full bg-white/50 border border-rose-100 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-rose-200 transition-all"
                     rows={3}
                   />
                 </div>
@@ -205,7 +218,7 @@ export default function CartPage() {
                 <button
                   onClick={handleWhatsAppOrder}
                   disabled={loading}
-                  className="w-full bg-rose-400 text-white py-5 rounded-full text-label-sm uppercase tracking-widest shadow-soft hover:bg-rose-500 transition-all flex items-center justify-center gap-3"
+                  className="w-full bg-rose-400 text-white py-6 rounded-full text-label-sm uppercase tracking-[0.2em] font-bold shadow-soft hover:bg-rose-500 transition-all flex items-center justify-center gap-3 active:scale-95"
                 >
                   <span className="material-symbols-outlined text-lg">send</span>
                   {loading ? 'Processing...' : 'Reserve via WhatsApp'}
@@ -213,15 +226,15 @@ export default function CartPage() {
 
                 <button 
                   onClick={() => setCheckoutMode(false)}
-                  className="w-full text-center text-[10px] text-secondary hover:text-primary uppercase tracking-[0.2em] transition-colors"
+                  className="w-full text-center text-[10px] text-secondary hover:text-primary uppercase tracking-[0.3em] font-bold transition-colors"
                 >
-                  ← Back to Bag
+                  ← Back to Selection
                 </button>
               </div>
             )}
             
-            <p className="mt-10 text-[10px] text-secondary text-center italic opacity-60">
-              Each order is personally curated and shipped with care from our boutique.
+            <p className="mt-12 text-[10px] text-secondary text-center italic opacity-40 leading-relaxed px-6">
+              Each order is personally curated and shipped with care from our boutique to your doorstep.
             </p>
           </div>
         </div>

@@ -25,8 +25,8 @@ export default function Navbar() {
     <>
       <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl border-b border-rose-100/20 shadow-[0_8px_32px_rgba(250,218,221,0.2)] flex justify-between items-center px-16 py-6 transition-colors duration-300">
         <div className="flex items-center gap-12">
-          <Link to="/" className="text-2xl font-light italic text-rose-400 font-display hover:opacity-80 transition-opacity">
-            Ethereal Grace
+          <Link to="/" className="hover:opacity-80 transition-opacity">
+            <img src="/Comet white.png" alt="COMET" className="h-8 w-auto invert" />
           </Link>
           <div className="hidden md:flex gap-8 items-center">
             {navLinks.map((link) => (
