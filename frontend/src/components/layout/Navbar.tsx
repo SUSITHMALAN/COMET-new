@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, Menu, X, Search, User } from 'lucide-react';
 import { useCartStore, useAuthStore } from '../../store';
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const totalItems = useCartStore(s => s.totalItems());
@@ -16,157 +14,97 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => { setOpen(false); }, [location]);
-
   const navLinks = [
+    { label: 'Drops', href: '/drops' },
     { label: 'Shop', href: '/shop' },
-    { label: 'New In', href: '/shop?filter=new' },
-    { label: 'Sale', href: '/shop?filter=sale' },
-    { label: 'About', href: '/about' },
+    { label: 'Collections', href: '/collections' },
+    { label: 'Community', href: '/community' },
   ];
 
   return (
-    <header style={{
-      position: 'fixed',
-      top: 0, left: 0, right: 0,
-      zIndex: 1000,
-      height: 'var(--nav-height)',
-      background: scrolled ? 'rgba(10,10,10,0.97)' : '#0a0a0a',
-      backdropFilter: 'blur(12px)',
-      borderBottom: scrolled ? '1px solid rgba(255,255,255,0.08)' : '1px solid transparent',
-      transition: 'all 0.3s ease',
-    }}>
-      <div className="container" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        {/* Logo */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
-          <img
-            src="/Comet white.png"
-            alt="COMET"
-            style={{
-              height: '100px',
-              width: 'auto',
-              display: 'block'
-            }}
-          />
-        </Link>
+    <>
+      {/* Top Desktop NavBar */}
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b-2 ${scrolled ? 'bg-black/90 backdrop-blur-md border-white/10' : 'bg-black border-white'}`}
+           style={{ height: 'var(--nav-height)' }}>
+        <div className="container h-full flex justify-between items-center">
+          {/* Logo */}
+          <Link to="/" className="text-3xl font-black italic tracking-tighter text-white uppercase font-display">
+            COMET
+          </Link>
 
-        {/* Desktop Nav */}
-        <nav style={{ display: 'flex', gap: 36, alignItems: 'center' }} className="desktop-nav">
-          {navLinks.map(link => (
-            <Link
-              key={link.href}
-              to={link.href}
-              style={{
-                color: location.pathname === link.href.split('?')[0] ? 'var(--white)' : 'var(--grey-400)',
-                fontSize: '13px',
-                fontWeight: 600,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                transition: 'color 0.2s',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--white)')}
-              onMouseLeave={e => (e.currentTarget.style.color = location.pathname === link.href.split('?')[0] ? 'var(--white)' : 'var(--grey-400)')}
-            >
-              {link.label}
+          {/* Desktop Links */}
+          <div className="hidden md:flex gap-8 items-center">
+            {navLinks.map(link => (
+              <Link
+                key={link.href}
+                to={link.href}
+                className={`font-body uppercase font-black tracking-tighter text-sm transition-colors duration-100 ${
+                  location.pathname === link.href ? 'text-primary border-b-2 border-primary pb-1' : 'text-white hover:text-primary'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center gap-4">
+            <div className="relative hidden lg:block">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white text-sm">search</span>
+              <input 
+                type="text" 
+                placeholder="SEARCH SPEED..." 
+                className="input-minimal pl-10 w-48"
+              />
+            </div>
+            
+            <Link to="/cart" className="text-white hover:text-primary transition-all relative">
+              <span className="material-symbols-outlined">shopping_bag</span>
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                  {totalItems}
+                </span>
+              )}
             </Link>
-          ))}
-        </nav>
 
-        {/* Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Link to="/shop" style={{ padding: '8px', color: 'var(--grey-400)', display: 'flex', borderRadius: 'var(--radius)', transition: 'color 0.2s' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--white)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--grey-400)')}>
-            <Search size={20} />
-          </Link>
-
-          <Link to={user ? (user.role === 'admin' ? '/admin' : '/account') : '/login'} style={{ padding: '8px', color: 'var(--grey-400)', display: 'flex', borderRadius: 'var(--radius)', transition: 'color 0.2s' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--white)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--grey-400)')}>
-            <User size={20} />
-          </Link>
-
-          <Link
-            to="/cart"
-            style={{ position: 'relative', padding: '8px', color: 'var(--white)', display: 'flex', borderRadius: 'var(--radius)', transition: 'color 0.2s' }}
-          >
-            <ShoppingBag size={20} />
-            {totalItems > 0 && (
-              <span style={{
-                position: 'absolute',
-                top: 4, right: 4,
-                width: 16, height: 16,
-                borderRadius: '50%',
-                background: 'var(--accent)',
-                color: 'var(--white)',
-                fontSize: '10px',
-                fontWeight: 700,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                {totalItems}
-              </span>
-            )}
-          </Link>
-
-          {/* Mobile menu toggle */}
-          <button
-            onClick={() => setOpen(!open)}
-            style={{ padding: '8px', color: 'var(--white)', display: 'none' }}
-            className="mobile-menu-btn"
-          >
-            {open ? <X size={22} /> : <Menu size={22} />}
-          </button>
+            <Link to={user ? (user.role === 'admin' ? '/admin' : '/account') : '/login'} className="text-white hover:text-primary transition-all">
+              <span className="material-symbols-outlined">person</span>
+            </Link>
+          </div>
         </div>
+      </nav>
+
+      {/* Mobile Bottom NavBar */}
+      <div className="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 bg-black/95 border-t-2 border-white pb-safe">
+        <Link to="/" className={`flex flex-col items-center justify-center px-4 py-2 transition-all ${location.pathname === '/' ? 'text-primary' : 'text-white'}`}>
+          <span className="material-symbols-outlined">home</span>
+          <span className="text-[10px] font-bold tracking-widest mt-1">HOME</span>
+        </Link>
+        <Link to="/shop" className={`flex flex-col items-center justify-center px-4 py-2 transition-all ${location.pathname === '/shop' ? 'text-primary' : 'text-white'}`}>
+          <span className="material-symbols-outlined">storefront</span>
+          <span className="text-[10px] font-bold tracking-widest mt-1">SHOP</span>
+        </Link>
+        <Link to="/search" className="flex flex-col items-center justify-center text-white px-4 py-2">
+          <span className="material-symbols-outlined">search</span>
+          <span className="text-[10px] font-bold tracking-widest mt-1">SEARCH</span>
+        </Link>
+        <Link to="/cart" className={`flex flex-col items-center justify-center px-4 py-2 relative ${location.pathname === '/cart' ? 'text-primary' : 'text-white'}`}>
+          <span className="material-symbols-outlined">shopping_cart</span>
+          <span className="text-[10px] font-bold tracking-widest mt-1">CART</span>
+          {totalItems > 0 && (
+            <span className="absolute top-2 right-4 bg-primary text-white text-[8px] font-bold w-3 h-3 flex items-center justify-center rounded-full">
+              {totalItems}
+            </span>
+          )}
+        </Link>
+        <Link to="/login" className="flex flex-col items-center justify-center text-white px-4 py-2">
+          <span className="material-symbols-outlined">person</span>
+          <span className="text-[10px] font-bold tracking-widest mt-1">ME</span>
+        </Link>
       </div>
 
-      {/* Mobile menu */}
-      {open && (
-        <div style={{
-          position: 'fixed',
-          top: 'var(--nav-height)',
-          left: 0, right: 0, bottom: 0,
-          background: 'var(--black)',
-          padding: '32px 24px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 8,
-          zIndex: 999,
-        }}>
-          {navLinks.map(link => (
-            <Link
-              key={link.href}
-              to={link.href}
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '36px',
-                letterSpacing: '0.06em',
-                color: 'var(--white)',
-                padding: '8px 0',
-                borderBottom: '1px solid var(--grey-800)',
-              }}
-            >
-              {link.label}
-            </Link>
-          ))}
-          {!user && (
-            <Link
-              to="/admin/login"
-              style={{ marginTop: 24, fontSize: '14px', color: 'var(--grey-500)' }}
-            >
-              Admin Login
-            </Link>
-          )}
-        </div>
-      )}
-
-      <style>{`
-        @media (max-width: 768px) {
-          .desktop-nav { display: none !important; }
-          .mobile-menu-btn { display: flex !important; }
-        }
-      `}</style>
-    </header>
+      {/* Spacer to prevent content from going under the fixed navbar */}
+      <div style={{ height: 'var(--nav-height)' }} />
+    </>
   );
 }

@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { authApi } from '../api';
 import { useAuthStore } from '../store';
 import { showToast } from '../hooks/useToast';
-import { Eye, EyeOff } from 'lucide-react';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
@@ -18,13 +17,9 @@ export default function SignupPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      // 1. Register the user
       await authApi.register({ name, email, password });
-      
-      // 2. Automatically log them in after registration
       const loginRes = await authApi.login(email, password);
       const { access_token, user } = loginRes.data;
-      
       setAuth(user, access_token);
       showToast('Account created successfully!', 'success');
       navigate('/');
@@ -36,59 +31,42 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="container" style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '80px 24px',
-      minHeight: 'calc(100vh - var(--nav-height) - 300px)',
-    }}>
-      <div style={{ width: '100%', maxWidth: 420, position: 'relative' }}>
-        <div style={{ textAlign: 'center', marginBottom: 40 }}>
-          <h1 style={{ color: 'var(--white)', fontSize: '28px', fontFamily: 'var(--font-display)', letterSpacing: '0.05em' }}>
-            CREATE ACCOUNT
-          </h1>
-          <p style={{ color: 'var(--grey-500)', fontSize: '14px', marginTop: 8 }}>
-            Join us to manage your orders and get exclusive offers.
-          </p>
+    <main className="container flex items-center justify-center py-20 fade-in min-h-[70vh]">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-12">
+          <h1 className="text-headline-xl text-white mb-4">JOIN THE FLEET</h1>
+          <p className="text-on-surface-variant text-sm tracking-widest font-bold">CREATE YOUR COMET PROFILE</p>
         </div>
 
-        <div style={{
-          background: 'var(--grey-900)',
-          borderRadius: 'var(--radius-lg)',
-          padding: '40px',
-          border: '1px solid var(--grey-800)',
-        }}>
-          <form onSubmit={handleSignup} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <div className="form-group">
-              <label className="form-label" style={{ color: 'var(--grey-400)' }}>Full Name</label>
+        <div className="bg-surface-container border-2 border-white/10 p-10">
+          <form onSubmit={handleSignup} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-label-caps text-[10px] text-white">FULL NAME</label>
               <input
                 type="text"
                 value={name}
-                onChange={e => setName(e.target.value)}
-                placeholder="John Doe"
+                onChange={e => setName(e.target.value.toUpperCase())}
+                placeholder="JOHN DOE"
                 required
-                className="form-input"
-                style={{ background: 'var(--grey-800)', border: '1.5px solid var(--grey-700)', color: 'var(--white)' }}
+                className="input-minimal w-full bg-surface-container-low"
               />
             </div>
 
-            <div className="form-group">
-              <label className="form-label" style={{ color: 'var(--grey-400)' }}>Email Address</label>
+            <div className="space-y-2">
+              <label className="text-label-caps text-[10px] text-white">EMAIL ADDRESS</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder="YOU@EXAMPLE.COM"
                 required
-                className="form-input"
-                style={{ background: 'var(--grey-800)', border: '1.5px solid var(--grey-700)', color: 'var(--white)' }}
+                className="input-minimal w-full bg-surface-container-low"
               />
             </div>
 
-            <div className="form-group">
-              <label className="form-label" style={{ color: 'var(--grey-400)' }}>Password</label>
-              <div style={{ position: 'relative' }}>
+            <div className="space-y-2">
+              <label className="text-label-caps text-[10px] text-white">PASSWORD</label>
+              <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'}
                   value={password}
@@ -96,15 +74,16 @@ export default function SignupPage() {
                   placeholder="••••••••"
                   required
                   minLength={6}
-                  className="form-input"
-                  style={{ background: 'var(--grey-800)', border: '1.5px solid var(--grey-700)', color: 'var(--white)', paddingRight: 44 }}
+                  className="input-minimal w-full bg-surface-container-low pr-12"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass(!showPass)}
-                  style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--grey-500)', background: 'none', border: 'none', cursor: 'pointer' }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-white"
                 >
-                  {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                  <span className="material-symbols-outlined text-sm">
+                    {showPass ? 'visibility_off' : 'visibility'}
+                  </span>
                 </button>
               </div>
             </div>
@@ -112,21 +91,22 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={loading}
-              className="btn btn-accent"
-              style={{ width: '100%', marginTop: 8, fontSize: '15px', padding: '14px' }}
+              className="btn-brutalist w-full py-4 text-sm"
             >
-              {loading ? 'Creating account...' : 'Create Account'}
+              {loading ? 'CREATING PROFILE...' : 'INITIALIZE ACCOUNT'}
             </button>
           </form>
 
-          <div style={{ marginTop: 24, textAlign: 'center', fontSize: '14px', color: 'var(--grey-500)' }}>
-            Already have an account?{' '}
-            <Link to="/login" style={{ color: 'var(--white)', fontWeight: 600, textDecoration: 'none' }}>
-              Sign in
+          <div className="mt-10 pt-8 border-t-2 border-white/5 text-center">
+            <p className="text-[10px] text-on-surface-variant font-bold tracking-widest uppercase mb-4">
+              ALREADY REGISTERED?
+            </p>
+            <Link to="/login" className="text-label-caps text-white hover:text-primary transition-colors border-b-2 border-primary pb-1">
+              SIGN IN HERE
             </Link>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
