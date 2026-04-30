@@ -28,8 +28,8 @@ export default function Navbar() {
            style={{ height: 'var(--nav-height)' }}>
         <div className="container h-full flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" className="text-3xl font-black italic tracking-tighter text-white uppercase font-display">
-            COMET
+          <Link to="/" className="flex items-center">
+            <img src="/Comet%20white.png" alt="COMET" className="h-8 md:h-10 object-contain" />
           </Link>
 
           {/* Desktop Links */}
@@ -48,13 +48,13 @@ export default function Navbar() {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
             <div className="relative hidden lg:block">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white text-sm">search</span>
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/50 text-[18px]">search</span>
               <input 
                 type="text" 
                 placeholder="SEARCH SPEED..." 
-                className="input-minimal pl-10 w-48"
+                className="bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-white/50 text-[12px] font-label-caps uppercase tracking-widest px-10 py-2 w-56 focus:outline-none focus:border-primary transition-colors"
               />
             </div>
             

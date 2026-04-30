@@ -64,10 +64,10 @@ export default function HomePage() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-col md:flex-row gap-6 justify-center"
           >
-            <Link to="/shop?filter=new" className="bg-[#FF3C00] text-white font-label-caps text-[14px] px-12 py-6 hover:bg-orange-700 transition-all active:scale-95 text-center tracking-widest font-bold">
+            <Link to="/shop?filter=new" className="bg-white/10 backdrop-blur-md border border-white/20 text-white font-label-caps text-[14px] px-12 py-6 hover:bg-white/20 hover:border-primary transition-all active:scale-95 text-center tracking-widest font-bold">
               SHOP DROP 01
             </Link>
-            <Link to="/shop" className="border-2 border-white text-white font-label-caps text-[14px] px-12 py-6 hover:bg-white hover:text-black transition-all active:scale-95 text-center tracking-widest font-bold">
+            <Link to="/shop" className="bg-white/5 backdrop-blur-md border border-white/10 text-white/80 font-label-caps text-[14px] px-12 py-6 hover:bg-white/10 hover:text-white transition-all active:scale-95 text-center tracking-widest font-bold">
               VIEW LOOKBOOK
             </Link>
           </motion.div>
@@ -75,7 +75,7 @@ export default function HomePage() {
       </section>
 
       {/* Marquee / Ticker */}
-      <div className="bg-primary py-4 border-y-2 border-black overflow-hidden whitespace-nowrap">
+      <div className="bg-primary py-4 border-y-2 border-black overflow-hidden whitespace-nowrap relative z-20">
         <div className="inline-block animate-[marquee_20s_linear_infinite]">
           <span className="font-headline-md text-headline-md text-black mx-8 uppercase">
             NEW SEASON ARRIVING NOW — ORDER VIA WHATSAPP — WORLDWIDE SHIPPING — NEW SEASON ARRIVING NOW — ORDER VIA WHATSAPP — WORLDWIDE SHIPPING
@@ -84,7 +84,7 @@ export default function HomePage() {
       </div>
 
       {/* New Arrivals Bento Grid */}
-      <section className="max-w-[1440px] mx-auto px-6 py-32">
+      <section className="relative z-10 max-w-[1440px] mx-auto px-6 py-24 mt-10">
         <motion.div {...fadeInUp} className="flex justify-between items-end mb-12 border-b-2 border-white/20 pb-6">
           <h2 className="font-headline-lg text-[64px] leading-none text-white uppercase">NEW ARRIVALS</h2>
           <Link to="/shop?filter=new" className="font-label-caps text-[13px] tracking-widest font-bold text-primary flex items-center gap-2 hover:underline mb-2">
@@ -107,10 +107,17 @@ export default function HomePage() {
                     src={(() => { try { return getImageUrl(JSON.parse(newArrivals[0].images)[0]); } catch { return ''; } })() || "https://lh3.googleusercontent.com/aida-public/AB6AXuC1D0r1RX6MMkIw7e0iIoRgwTONdqrszVB-CLQV-LqTyJfUAMM5X0t6hIyH2hWhLTw0_vzy911OfVsj_tcZ7pg8QDhBNo5wf5moxFx2VbS0wR5BkpY_EfxwCF5815m5BbJR_kuLZKvN3BwSJqKfGCQtBuKUgt-RTzf9fK6zqg65Diwnd3db4xPsV8950VAMPURRXMhuCHa8wO-2fprYXET4rgwcs4JWG-2rSbLvJKTcXT1peeyzGMTU5dEQlGkg_S8-x5Nn3mbebNOh"}
                     alt={newArrivals[0].name}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-10 flex flex-col justify-end">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-10 flex flex-col justify-end">
                     <p className="font-label-caps text-[12px] tracking-widest font-bold text-primary mb-3 uppercase">{newArrivals[0].category?.name || 'CORE COLLECTION'}</p>
                     <h3 className="font-headline-md text-[40px] leading-tight text-white uppercase mb-2">{newArrivals[0].name}</h3>
-                    <p className="font-body-md text-lg text-white font-medium">${newArrivals[0].price.toFixed(2)}</p>
+                    <div className="flex justify-between items-end">
+                      <p className="font-body-md text-lg text-white font-medium">${newArrivals[0].price.toFixed(2)}</p>
+                      <div className="flex gap-2">
+                        {['S', 'M', 'L', 'XL'].map(size => (
+                          <span key={size} className="text-[10px] font-bold border border-white/20 text-white/80 px-2 py-1 uppercase">{size}</span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </Link>
               </motion.div>
@@ -129,7 +136,14 @@ export default function HomePage() {
                   </div>
                   <div className="mt-auto">
                     <p className="font-label-caps text-[13px] font-bold tracking-wider text-white uppercase truncate mb-2">{product.name}</p>
-                    <p className="font-body-md text-[15px] text-neutral-400 font-medium">${product.price.toFixed(2)}</p>
+                    <div className="flex justify-between items-center mb-3">
+                      <p className="font-body-md text-[15px] text-neutral-400 font-medium">${product.price.toFixed(2)}</p>
+                    </div>
+                    <div className="flex gap-1.5 flex-wrap">
+                      {['S', 'M', 'L', 'XL'].map(size => (
+                        <span key={size} className="text-[9px] font-bold border border-white/10 bg-white/5 text-white/60 px-1.5 py-0.5 uppercase">{size}</span>
+                      ))}
+                    </div>
                   </div>
                 </Link>
               </motion.div>
@@ -148,7 +162,14 @@ export default function HomePage() {
                   </div>
                   <div className="mt-auto">
                     <p className="font-label-caps text-[13px] font-bold tracking-wider text-white uppercase mb-2">CORE CAP / BLK</p>
-                    <p className="font-body-md text-[15px] text-neutral-400 font-medium">$45.00</p>
+                    <div className="flex justify-between items-center mb-3">
+                      <p className="font-body-md text-[15px] text-neutral-400 font-medium">$45.00</p>
+                    </div>
+                    <div className="flex gap-1.5 flex-wrap">
+                      {['ONE SIZE'].map(size => (
+                        <span key={size} className="text-[9px] font-bold border border-white/10 bg-white/5 text-white/60 px-1.5 py-0.5 uppercase">{size}</span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -158,10 +179,10 @@ export default function HomePage() {
       </section>
 
       {/* WhatsApp Promotion Section */}
-      <section className="bg-[#0a0a0a] border-y-[1px] border-white/20 py-32 overflow-hidden">
+      <section className="bg-[#0a0a0a] border-y-[1px] border-white/20 py-32">
         <div className="max-w-[1440px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <motion.div {...fadeInUp} className="order-2 md:order-1">
-            <h2 className="font-headline-lg text-[72px] text-white uppercase mb-8 leading-[0.9]">
+            <h2 className="font-headline-lg text-[72px] text-white uppercase mb-8 leading-[1.1]">
               DIRECT ACCESS.<br/>
               <span className="text-primary">ORDER VIA WHATSAPP.</span>
             </h2>
@@ -180,8 +201,8 @@ export default function HomePage() {
             className="order-1 md:order-2 relative h-[600px]"
           >
             <img className="w-full h-full object-cover grayscale opacity-80 border-[1px] border-white/20" alt="Phone" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAACI8E31pej9IYIQOPMCIfnW0GRYowz3sCuB2jp6b2t9oFN3i_PKaSmUlmxpIMxwuCQQOPXMAOooHvppi9N_Sg0k4zvOIH8ZmcAPQSPNHaXLaPsYs67BicjAuQaay1X2ncU0N-NJvuwqd5KDgf3Cp3km0L5hfEn1p-7pXHDFSEr5rOT-QTPYvlOuzMVZ-_9P5qhsQOrIV6vfthc-CLP3SRFlU-ZcuLkCizLbWUm2CGkr9PVBTREDFLTjoSKnK1lQX7Feq3wScKEbLu"/>
-            <div className="absolute -bottom-8 -right-8 bg-primary p-10 hidden md:block shadow-2xl">
-              <p className="font-headline-md text-[40px] text-white uppercase leading-none tracking-tight">+94 77 175 8395</p>
+            <div className="absolute bottom-4 right-4 bg-primary p-6 md:p-10 hidden md:block shadow-2xl z-20">
+              <p className="font-headline-md text-[32px] md:text-[40px] text-white uppercase leading-none tracking-tight">+94 77 175 8395</p>
             </div>
           </motion.div>
         </div>

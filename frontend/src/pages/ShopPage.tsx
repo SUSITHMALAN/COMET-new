@@ -63,7 +63,7 @@ export default function ShopPage() {
       <header className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
         <div>
           <h1 className="text-headline-xl text-white uppercase">CORE CATALOG</h1>
-          <p className="text-body text-lg text-on-surface-variant max-w-xl mt-4">
+          <p className="text-body text-lg text-on-surface-variant max-w-lg mt-4 leading-relaxed">
             HIGH-VELOCITY PERFORMANCE GEAR ENGINEERED FOR THE URBAN FRONTIER. BRUTALIST AESTHETICS MET WITH TECHNICAL PRECISION.
           </p>
         </div>

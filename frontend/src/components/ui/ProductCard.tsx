@@ -40,7 +40,7 @@ export default function ProductCard({ product }: Props) {
         )}
       </div>
 
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-start mb-3">
         <div className="max-w-[70%]">
           <h3 className="text-label-caps text-white group-hover:text-primary transition-colors truncate">
             {product.name}
@@ -52,6 +52,15 @@ export default function ProductCard({ product }: Props) {
         <span className="text-label-caps text-white">
           ${product.price.toFixed(2)}
         </span>
+      </div>
+      <div className="flex gap-1.5 flex-wrap">
+        {(product.category?.name?.toLowerCase().includes('hat') || product.category?.name?.toLowerCase().includes('cap')) ? (
+          <span className="text-[9px] font-bold border border-white/10 bg-white/5 text-white/60 px-1.5 py-0.5 uppercase">ONE SIZE</span>
+        ) : (
+          ['S', 'M', 'L', 'XL'].map(size => (
+            <span key={size} className="text-[9px] font-bold border border-white/10 bg-white/5 text-white/60 px-1.5 py-0.5 uppercase group-hover:border-primary/50 group-hover:text-primary/80 transition-colors">{size}</span>
+          ))
+        )}
       </div>
     </Link>
   );
