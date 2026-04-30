@@ -33,12 +33,12 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex gap-8 items-center">
+          <div className="hidden md:flex gap-10 items-center">
             {navLinks.map(link => (
               <Link
                 key={link.href}
                 to={link.href}
-                className={`font-body uppercase font-black tracking-tighter text-sm transition-colors duration-100 ${
+                className={`font-label-caps uppercase font-bold tracking-widest text-[13px] transition-colors duration-200 ${
                   location.pathname === link.href ? 'text-primary border-b-2 border-primary pb-1' : 'text-white hover:text-primary'
                 }`}
               >
