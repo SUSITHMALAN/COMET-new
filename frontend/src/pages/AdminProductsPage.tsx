@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, X, Upload, Star, Sparkles } from 'lucide-react';
-import { productsApi, categoriesApi, getImageUrl } from '../api';
+import { productsApi, categoriesApi } from '../api';
 import { Product, Category } from '../types';
 import { showToast } from '../hooks/useToast';
 
@@ -123,7 +123,7 @@ export default function AdminProductsPage() {
                     <td style={{ padding: '14px 16px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                         <div style={{ width: 48, height: 60, borderRadius: 'var(--radius)', overflow: 'hidden', background: 'var(--grey-100)', flexShrink: 0 }}>
-                          {imgs[0] ? <img src={getImageUrl(imgs[0])} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
+                          {imgs[0] ? <img src={imgs[0]} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
                         </div>
                         <div>
                           <p style={{ fontWeight: 600, fontSize: '14px' }}>{p.name}</p>
@@ -223,17 +223,13 @@ export default function AdminProductsPage() {
                 </label>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {([
+                {[
                   { key: 'is_featured', label: 'Featured Product' },
                   { key: 'is_new', label: 'New Arrival' },
                   ...(editing ? [{ key: 'is_active', label: 'Active (visible)' }] : []),
-                ] as const).map(({ key, label }) => (
+                ].map(({ key, label }) => (
                   <label key={key} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: '14px' }}>
-                    <input 
-                      type="checkbox" 
-                      checked={!!form[key as keyof typeof form]} 
-                      onChange={e => setForm(f => ({ ...f, [key]: e.target.checked }))} 
-                    />
+                    <input type="checkbox" checked={form[key as keyof typeof form] as boolean} onChange={e => setForm(f => ({ ...f, [key]: e.target.checked }))} />
                     {label}
                   </label>
                 ))}

@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import {
   LayoutDashboard, Package, ShoppingBag, Users, BarChart3,
-  LogOut, Menu, X, ChevronRight, Layers, Tags
+  LogOut, Menu, X, ChevronRight, Layers
 } from 'lucide-react';
 import { useAuthStore } from '../../store';
 
 const navItems = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard, exact: true },
   { label: 'Products', href: '/admin/products', icon: Package },
-  { label: 'Categories', href: '/admin/categories', icon: Tags },
   { label: 'Orders', href: '/admin/orders', icon: ShoppingBag },
   { label: 'Stock', href: '/admin/stock', icon: Layers },
   { label: 'Users', href: '/admin/users', icon: Users },
@@ -55,15 +54,9 @@ export default function AdminLayout() {
           height: 68,
         }}>
           {!collapsed && (
-            <img 
-              src="/logo.png" 
-              alt="COMET" 
-              style={{ 
-                height: '24px', 
-                width: 'auto',
-                display: 'block'
-              }} 
-            />
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '22px', letterSpacing: '0.1em', color: 'var(--white)' }}>
+              COMET<span style={{ color: 'var(--accent)' }}>.</span>
+            </div>
           )}
           <button
             onClick={() => setCollapsed(!collapsed)}
