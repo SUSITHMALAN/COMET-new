@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { authApi } from '../api';
 import { useAuthStore } from '../store';
 import { showToast } from '../hooks/useToast';
+import { motion } from 'framer-motion';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
@@ -31,42 +32,49 @@ export default function SignupPage() {
   };
 
   return (
-    <main className="container flex items-center justify-center py-32 animate-soft-fade min-h-[80vh]">
-      <div className="w-full max-w-lg">
-        <div className="text-center mb-16">
-          <p className="text-label-caps text-primary tracking-[0.3em] mb-4">Onboarding</p>
-          <h1 className="text-headline-lg mb-6">JOIN THE FLEET</h1>
-          <p className="text-body text-[14px] opacity-60 max-w-xs mx-auto leading-relaxed">Create your profile to access early drops and archival technical gear.</p>
+    <main className="flex items-center justify-center min-h-screen px-8 pt-32 pb-32 night-sky">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-lg"
+      >
+        <div className="text-center mb-12">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-violet-600 flex items-center justify-center mx-auto mb-8 shadow-glow-violet">
+            <span className="text-white font-black text-2xl">C</span>
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-3">Join the Constellation</h1>
+          <p className="text-base text-white/40">Create your COMET account</p>
         </div>
 
-        <div className="bg-surface p-12 rounded-[48px] border border-outline/10 shadow-sm">
-          <form onSubmit={handleSignup} className="space-y-8">
-            <div className="space-y-4">
-              <label className="text-label-caps text-[10px] opacity-40 ml-4">Full Name</label>
+        <div className="rounded-3xl bg-surface border border-white/[0.06] p-10">
+          <form onSubmit={handleSignup} className="space-y-6">
+            <div>
+              <label className="text-xs text-white/30 mb-2 block font-medium">Full Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder="John Doe"
                 required
-                className="w-full bg-surface-container-low border border-outline/10 rounded-full px-8 py-5 text-[14px] focus:outline-none focus:border-primary transition-all"
+                className="input-dark"
               />
             </div>
 
-            <div className="space-y-4">
-              <label className="text-label-caps text-[10px] opacity-40 ml-4">Email Address</label>
+            <div>
+              <label className="text-xs text-white/30 mb-2 block font-medium">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full bg-surface-container-low border border-outline/10 rounded-full px-8 py-5 text-[14px] focus:outline-none focus:border-primary transition-all"
+                className="input-dark"
               />
             </div>
 
-            <div className="space-y-4">
-              <label className="text-label-caps text-[10px] opacity-40 ml-4">Password</label>
+            <div>
+              <label className="text-xs text-white/30 mb-2 block font-medium">Password</label>
               <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'}
@@ -75,12 +83,12 @@ export default function SignupPage() {
                   placeholder="••••••••"
                   required
                   minLength={6}
-                  className="w-full bg-surface-container-low border border-outline/10 rounded-full px-8 py-5 text-[14px] focus:outline-none focus:border-primary transition-all pr-16"
+                  className="input-dark pr-12"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass(!showPass)}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 text-on-surface-variant/40 hover:text-on-background transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/50 transition-colors"
                 >
                   <span className="material-symbols-outlined text-[20px]">
                     {showPass ? 'visibility_off' : 'visibility'}
@@ -89,25 +97,25 @@ export default function SignupPage() {
               </div>
             </div>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="btn-pill btn-pill-primary w-full h-16 text-[13px] font-bold tracking-widest mt-6"
+              className="w-full bg-gradient-to-r from-violet-600 to-violet-500 text-white py-4 rounded-xl font-semibold text-base tracking-wide shadow-glow-violet hover:from-violet-500 hover:to-violet-400 transition-all disabled:opacity-50 mt-4"
             >
-              {loading ? 'CREATING PROFILE...' : 'INITIALIZE ACCOUNT'}
-            </button>
+              {loading ? 'Creating Account...' : 'Create Account'}
+            </motion.button>
           </form>
 
-          <div className="mt-12 pt-10 border-t border-outline/10 text-center">
-            <p className="text-[11px] text-on-surface-variant opacity-40 font-medium tracking-widest uppercase mb-6">
-              Already registered?
-            </p>
-            <Link to="/login" className="text-label-caps text-[11px] font-bold tracking-widest text-on-background hover:text-primary transition-all border-b border-primary/30 pb-1">
-              SIGN IN HERE
+          <div className="mt-10 pt-8 border-t border-white/[0.06] text-center">
+            <p className="text-sm text-white/30 mb-4">Already have an account?</p>
+            <Link to="/login" className="text-base font-medium text-violet-400 hover:text-violet-300 transition-colors">
+              Sign In
             </Link>
           </div>
         </div>
-      </div>
+      </motion.div>
     </main>
   );
 }

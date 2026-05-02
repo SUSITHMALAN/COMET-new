@@ -1,146 +1,249 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { productsApi, getImageUrl } from '../api';
-import { Product } from '../types';
+import { ArrowRight, Zap, Package, RefreshCw } from 'lucide-react';
+import { productsApi, categoriesApi } from '../api';
+import { Product, Category } from '../types';
 import ProductCard from '../components/ui/ProductCard';
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 40 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.7 }
-};
-
-const staggerContainer = {
-  initial: { opacity: 0 },
-  whileInView: { opacity: 1 },
-  viewport: { once: true, margin: "-100px" },
-  transition: { staggerChildren: 0.2 }
-};
-
 export default function HomePage() {
+  const [featured, setFeatured] = useState<Product[]>([]);
   const [newArrivals, setNewArrivals] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    productsApi.getAll({ is_new: true, limit: 8 })
-      .then(res => {
-        if (res.data.length < 4) {
-          // If too few new items, just get all products
-          return productsApi.getAll({ limit: 8 });
-        }
-        return res;
-      })
-      .then(res => {
-        setNewArrivals(res.data);
-      })
-      .finally(() => setLoading(false));
+    Promise.all([
+      productsApi.getAll({ featured: true, limit: 4 }),
+      productsApi.getAll({ is_new: true, limit: 4 }),
+      categoriesApi.getAll(),
+    ]).then(([featRes, newRes, catRes]) => {
+      setFeatured(featRes.data);
+      setNewArrivals(newRes.data);
+      setCategories(catRes.data);
+    }).finally(() => setLoading(false));
   }, []);
 
   return (
-    <div className="bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container">
-      {/* Hero Section */}
-      <header className="relative h-[921px] flex items-center pt-24 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            className="w-full h-full object-cover" 
-            alt="Hero" 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZjtlcZIn742dqDm7v4QJ2EJ9bwgGdGIQAHHRXKk-kXJMgZX4VgByNF0ZSwGmwFrcc4mYp14Ng3z6nFxwRGbyZrExm3wO0jPOFZIZjN8jYDwJ3FBrW8xUn9iEGRZjeqqMJKmm7pSCJV0vbzMv8WeMS-NT3Y6E8ELtHiNB_alYF9JeNgrgYqDKGewMa57L6WHdwNMvF_Wdpa97BMoWQvtwoPTiwUjBTgxeh1GYd0GwWaIyMZWEOVC7lzhfK4vadidwo2Wi1Q32Crp7D"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/20 to-transparent"></div>
-        </div>
-        <div className="relative z-10 px-16 max-w-3xl animate-fade-in-slide">
-          <span className="text-label-sm text-primary uppercase tracking-[0.2em] mb-4 block">Spring Collection 2024</span>
-          <h1 className="text-headline-xl mb-6 leading-tight">Woven with <br/><span className="italic font-light text-rose-400">Pure Imagination</span></h1>
-          <p className="text-body-lg text-secondary mb-10 max-w-lg">Discover curated garments designed to celebrate the magic of childhood. Each piece is crafted with the finest natural fabrics and a touch of vintage charm.</p>
-          <div className="flex gap-4">
-            <Link to="/shop" className="bg-primary-container text-on-primary-container px-10 py-4 rounded-full text-label-sm hover:opacity-90 transition-opacity shadow-soft flex items-center justify-center">
-              Shop the Look
-            </Link>
-            <Link to="/lookbook" className="glass border border-white/40 px-10 py-4 rounded-full text-label-sm text-primary hover:bg-white/60 transition-all flex items-center justify-center">
-              View Lookbook
-            </Link>
-          </div>
-        </div>
-      </header>
+    <div style={{ paddingTop: 'var(--nav-height)' }}>
+      {/* Hero */}
+      <section style={{
+        minHeight: 'calc(100vh - var(--nav-height))',
+        background: 'var(--black)',
+        display: 'flex',
+        alignItems: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* Background texture */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          backgroundImage: `radial-gradient(ellipse at 20% 50%, rgba(255,60,0,0.08) 0%, transparent 60%),
+            radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.03) 0%, transparent 50%)`,
+        }} />
+        
+        {/* Big background text */}
+        <div style={{
+          position: 'absolute',
+          right: -20, top: '50%',
+          transform: 'translateY(-50%)',
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(120px, 22vw, 320px)',
+          letterSpacing: '-0.02em',
+          color: 'rgba(255,255,255,0.03)',
+          lineHeight: 1,
+          userSelect: 'none',
+        }}>COMET</div>
 
-      {/* Categories Bento Grid */}
-      <section className="px-16 py-24 bg-surface">
-        <div className="flex justify-between items-end mb-12">
-          <div>
-            <h2 className="text-headline-lg text-on-background mb-2">Curated Collections</h2>
-            <p className="text-secondary">Explore our most loved styles for every stage.</p>
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{ maxWidth: 720 }}>
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              background: 'rgba(255,60,0,0.15)',
+              border: '1px solid rgba(255,60,0,0.3)',
+              borderRadius: 2, padding: '6px 14px',
+              marginBottom: 32,
+            }}>
+              <Zap size={12} color="var(--accent)" fill="var(--accent)" />
+              <span style={{ fontSize: '11px', color: 'var(--accent)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                New Collection 2025
+              </span>
+            </div>
+
+            <h1 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(64px, 12vw, 160px)',
+              letterSpacing: '0.04em',
+              color: 'var(--white)',
+              lineHeight: 0.9,
+              marginBottom: 32,
+            }}>
+              MOVE<br />
+              <span style={{ color: 'var(--accent)' }}>FAST.</span>
+            </h1>
+
+            <p style={{
+              fontSize: 'clamp(16px, 2vw, 20px)',
+              color: 'var(--grey-400)',
+              maxWidth: 480,
+              lineHeight: 1.7,
+              marginBottom: 48,
+            }}>
+              Clothing built for those who refuse to slow down. Premium streetwear that hits different.
+            </p>
+
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              <Link to="/shop" className="btn btn-accent btn-lg">
+                Shop Collection
+                <ArrowRight size={18} />
+              </Link>
+              <Link to="/shop?filter=new" className="btn btn-outline btn-lg" style={{ color: 'var(--white)', borderColor: 'var(--grey-700)' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--white)'; (e.currentTarget as HTMLElement).style.color = 'var(--black)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'var(--white)'; }}>
+                New Arrivals
+              </Link>
+            </div>
           </div>
-          <Link to="/shop" className="text-rose-400 text-label-sm border-b border-rose-200 hover:text-rose-600 transition-colors">
-            Browse All
-          </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter h-[600px]">
-          <div className="md:col-span-2 relative group overflow-hidden rounded-xl">
-            <img 
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-              alt="Newborn" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpbMZSj_ipyIH9zqeISCNOIjycEyPWP4l6Y_AnQyv8uMPopw-UkUdwIwipITQxtbVRgC-pgV4xo4irVetJoVedMDEMq-w9q0P2dW2k_y5JRjChzuc5M312WH77Yb3ukIfcHLUN1NO9ioBqsCFMoH-xxRNrjCa9_mcxWk4DXEaPjuyLKe_5J0qr60WYcMW_wdgvfECX0secM4gWQ_7TlpBCzN--tdnc2qU39wuNzifcKzIr-_S2DGT5ZeLI2yYKft8UzuvZdY8XA7iO"
-            />
-            <div className="absolute bottom-6 left-6 right-6 glass-card p-6 rounded-lg transition-transform duration-300 group-hover:-translate-y-2">
-              <h3 className="text-headline-md text-on-background">Newborn Essentials</h3>
-              <p className="text-sm text-secondary">Organic cotton and softest knits.</p>
+
+        {/* Scroll indicator */}
+        <div style={{
+          position: 'absolute',
+          bottom: 40, left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 8,
+          color: 'var(--grey-600)',
+        }}>
+          <span style={{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Scroll</span>
+          <div style={{
+            width: 1, height: 48,
+            background: 'linear-gradient(to bottom, var(--grey-600), transparent)',
+          }} />
+        </div>
+      </section>
+
+      {/* Categories */}
+      {categories.length > 0 && (
+        <section style={{ padding: '80px 0', background: 'var(--grey-100)' }}>
+          <div className="container">
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '48px', letterSpacing: '0.06em', marginBottom: 40, color: 'var(--black)' }}>
+              SHOP BY CATEGORY
+            </h2>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              {categories.map(cat => (
+                <Link
+                  key={cat.id}
+                  to={`/shop?category=${cat.slug}`}
+                  className="btn btn-outline"
+                  style={{ fontSize: '13px' }}
+                >
+                  {cat.name}
+                </Link>
+              ))}
             </div>
           </div>
-          <div className="relative group overflow-hidden rounded-xl">
-            <img 
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-              alt="Details" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqixIosGHL67pgppqmj6yWGDADIiJ3hW8IS9jw6JXyy9OV5OMqaT_PMYZ9XhHAuCyJ4Y8e1_1wqF8MHsrgR4oA33MQzV_cW1OU9E4T2zyuAMOIfKDUoXH4CpUXX4zZpwgYMBVQ7rBz-P8JLNAg_VGe9SKlvQTkoxAvu3Q92sM6NMc0r_1N0PWMyAOhBbnKiSWxArHNwx7V5PS_uFk_Tn-NMHIzWL27iEvDB812lOSyMR0-Wh2KVE-eRG_BlA-I_6q4KKsLRVC-Tt0X"
-            />
-            <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <span className="glass px-6 py-2 rounded-full text-white text-label-sm">Explore Occasion</span>
+        </section>
+      )}
+
+      {/* Featured Products */}
+      {featured.length > 0 && (
+        <section style={{ padding: '80px 0' }}>
+          <div className="container">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 48 }}>
+              <div>
+                <p style={{ fontSize: '11px', color: 'var(--accent)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+                  Hand Picked
+                </p>
+                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(36px, 6vw, 64px)', letterSpacing: '0.06em' }}>
+                  FEATURED DROPS
+                </h2>
+              </div>
+              <Link to="/shop?filter=featured" className="btn btn-ghost" style={{ gap: 8 }}>
+                View All <ArrowRight size={16} />
+              </Link>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 24 }}>
+              {featured.map(p => <ProductCard key={p.id} product={p} />)}
             </div>
           </div>
-          <div className="relative group overflow-hidden rounded-xl bg-rose-50 flex flex-col items-center justify-center p-8 text-center border border-rose-100">
-            <span className="material-symbols-outlined text-4xl text-rose-300 mb-4">stars</span>
-            <h3 className="text-headline-md text-on-background mb-2">Gift Sets</h3>
-            <p className="text-secondary text-sm mb-6">Perfectly packaged surprises for the little ones in your life.</p>
-            <button className="bg-white px-6 py-2 rounded-full text-label-sm text-primary shadow-sm hover:shadow-md transition-shadow">Create a Box</button>
-          </div>
+        </section>
+      )}
+
+      {/* CTA Banner - WhatsApp Order */}
+      <section style={{
+        background: 'var(--black)',
+        padding: '80px 24px',
+        textAlign: 'center',
+      }}>
+        <div style={{ maxWidth: 600, margin: '0 auto' }}>
+          <h2 style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(36px, 6vw, 72px)',
+            letterSpacing: '0.06em',
+            color: 'var(--white)',
+            marginBottom: 20,
+          }}>
+            ORDER VIA<br /><span style={{ color: '#25D366' }}>WHATSAPP</span>
+          </h2>
+          <p style={{ color: 'var(--grey-400)', fontSize: '16px', lineHeight: 1.7, marginBottom: 36 }}>
+            Add items to your cart and place your order directly through WhatsApp for a personal shopping experience.
+          </p>
+          <Link to="/shop" className="btn btn-accent btn-lg">
+            Start Shopping
+            <ArrowRight size={18} />
+          </Link>
         </div>
       </section>
 
       {/* New Arrivals */}
-      <section className="px-16 py-24">
-        <div className="mb-12 text-center">
-          <h2 className="text-headline-lg text-on-background">New Arrivals</h2>
-          <div className="w-12 h-0.5 bg-rose-200 mx-auto mt-4"></div>
-        </div>
-        
-        {loading ? (
-          <div className="flex justify-center py-12">
-            <div className="w-8 h-8 border-2 border-rose-200 border-t-rose-400 rounded-full animate-spin"></div>
+      {newArrivals.length > 0 && (
+        <section style={{ padding: '80px 0' }}>
+          <div className="container">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 48 }}>
+              <div>
+                <p style={{ fontSize: '11px', color: 'var(--accent)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+                  Just Landed
+                </p>
+                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(36px, 6vw, 64px)', letterSpacing: '0.06em' }}>
+                  NEW ARRIVALS
+                </h2>
+              </div>
+              <Link to="/shop?filter=new" className="btn btn-ghost" style={{ gap: 8 }}>
+                View All <ArrowRight size={16} />
+              </Link>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 24 }}>
+              {newArrivals.map(p => <ProductCard key={p.id} product={p} />)}
+            </div>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-            {newArrivals.map((product) => (
-              <ProductCard key={product.id} product={product} />
+        </section>
+      )}
+
+      {/* Features */}
+      <section style={{ padding: '80px 0', background: 'var(--grey-100)' }}>
+        <div className="container">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 40 }}>
+            {[
+              { icon: Package, title: 'Island-Wide Delivery', desc: 'We deliver all across Sri Lanka' },
+              { icon: RefreshCw, title: 'Easy Returns', desc: '7-day hassle-free return policy' },
+              { icon: Zap, title: 'Premium Quality', desc: '100% authentic, long-lasting materials' },
+            ].map(({ icon: Icon, title, desc }) => (
+              <div key={title} style={{ textAlign: 'center' }}>
+                <div style={{
+                  width: 56, height: 56, borderRadius: '50%',
+                  background: 'var(--black)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  margin: '0 auto 16px',
+                }}>
+                  <Icon size={22} color="var(--white)" />
+                </div>
+                <h3 style={{ fontSize: '15px', fontWeight: 700, marginBottom: 8 }}>{title}</h3>
+                <p style={{ fontSize: '13px', color: 'var(--grey-500)' }}>{desc}</p>
+              </div>
             ))}
           </div>
-        )}
-      </section>
-
-      {/* Seasonal Favorites / Promo */}
-      <section className="mx-16 my-24 rounded-[40px] overflow-hidden relative min-h-[500px] flex items-center">
-        <div className="absolute inset-0 z-0">
-          <img 
-            className="w-full h-full object-cover" 
-            alt="Summer" 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQy1Q6UIobff2Jr-EOEnv4kMMXu2aTl-XxqrIcllUClV4f6-bhPtT2fADc6J18hgfie1zj0HSPKLcC7FUhtOmtE040LwcP6OU_4l_6_GdwNVedYMg3iPIFpbH0l3DvzK1pbMRnmM02npRxGQBQ5AXAEUQHsnT3Bj_guSwJfCSmqKUjgrvqhDWkMxvs-oS7kQxM1DHeVy-YTxjjADVJOYDDwbroahjNG3LZlJ--X21PPsHfizAirrdS6zUxn-qgX0csa86F-Qkr4drW"
-          />
-          <div className="absolute inset-0 bg-primary/30 mix-blend-multiply"></div>
-        </div>
-        <div className="relative z-10 px-16 text-white max-w-2xl">
-          <h2 className="text-headline-xl mb-6">Seasonal Favorites</h2>
-          <p className="text-body-lg mb-8 text-white/90">Our Summer Garden collection has arrived. Lightweight linens and sun-ready silhouettes designed for adventures in the tall grass.</p>
-          <button className="glass px-12 py-4 rounded-full text-label-sm text-white border border-white/30 hover:bg-white/20 transition-all uppercase tracking-widest">Explore Summer</button>
         </div>
       </section>
     </div>

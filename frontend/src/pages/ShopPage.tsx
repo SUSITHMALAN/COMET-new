@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
-import { productsApi, categoriesApi, getImageUrl } from '../api';
+import { useSearchParams } from 'react-router-dom';
+import { Search, SlidersHorizontal, X } from 'lucide-react';
+import { productsApi, categoriesApi } from '../api';
 import { Product, Category } from '../types';
 import ProductCard from '../components/ui/ProductCard';
 
@@ -10,6 +11,7 @@ export default function ShopPage() {
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
 
   const categorySlug = searchParams.get('category') || '';
   const filter = searchParams.get('filter') || '';
@@ -57,117 +59,122 @@ export default function ShopPage() {
     setSearchParams({});
   };
 
+  const hasFilters = categorySlug || filter || search;
+
+  const filterLabel = filter === 'new' ? 'New Arrivals'
+    : filter === 'featured' ? 'Featured'
+    : filter === 'sale' ? 'Sale'
+    : categorySlug ? categories.find(c => c.slug === categorySlug)?.name || 'Collection'
+    : search ? `"${search}"`
+    : 'All Products';
+
   return (
-    <main className="pt-32 pb-20 px-16 max-w-[1440px] mx-auto animate-fade-in-slide">
-      {/* Page Header */}
-      <header className="mb-12">
-        <h1 className="text-headline-xl text-primary mb-2">Girls' Collection</h1>
-        <p className="text-body-lg text-secondary font-light">Timeless pieces designed for moments of wonder.</p>
-      </header>
+    <div style={{ paddingTop: 'var(--nav-height)' }}>
+      {/* Header */}
+      <div style={{
+        background: 'var(--black)',
+        padding: '60px 0 40px',
+        borderBottom: '1px solid var(--grey-800)',
+      }}>
+        <div className="container">
+          <h1 style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(48px, 8vw, 96px)',
+            letterSpacing: '0.06em',
+            color: 'var(--white)',
+            marginBottom: 24,
+          }}>
+            {filterLabel.toUpperCase()}
+          </h1>
 
-      {/* Catalog Layout */}
-      <div className="flex flex-col lg:flex-row gap-12">
-        {/* Filters Side Panel (Glassmorphic) */}
-        <aside className="w-full lg:w-64 space-y-10">
-          <section>
-            <h3 className="text-label-sm text-primary mb-4 uppercase tracking-widest">Categories</h3>
-            <div className="flex flex-wrap lg:flex-col gap-3">
-              <button 
-                onClick={() => clearFilters()}
-                className={`glass-card px-4 py-2 rounded-full border border-rose-100 text-sm text-primary transition-all duration-300 text-left ${!categorySlug && !filter ? 'bg-rose-100/30 font-semibold' : 'hover:bg-rose-50/50'}`}
-              >
-                All Products
-              </button>
-              {categories.map(cat => (
-                <button 
-                  key={cat.id}
-                  onClick={() => setCategory(cat.slug)}
-                  className={`glass-card px-4 py-2 rounded-full border border-rose-100 text-sm text-primary transition-all duration-300 text-left ${categorySlug === cat.slug ? 'bg-rose-100/30 font-semibold' : 'hover:bg-rose-50/50'}`}
-                >
-                  {cat.name}
-                </button>
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <h3 className="text-label-sm text-primary mb-4 uppercase tracking-widest">Status</h3>
-            <div className="flex flex-wrap gap-2">
-              <button 
-                onClick={() => setFilter('new')}
-                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold transition-all ${filter === 'new' ? 'bg-primary-container text-on-primary-container' : 'bg-surface-container text-on-surface-variant hover:bg-rose-100/50'}`}
-              >
-                New Arrivals
-              </button>
-              <button 
-                onClick={() => setFilter('featured')}
-                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold transition-all ${filter === 'featured' ? 'bg-primary-container text-on-primary-container' : 'bg-surface-container text-on-surface-variant hover:bg-rose-100/50'}`}
-              >
-                Featured Drops
-              </button>
-            </div>
-          </section>
-
-          <section>
-            <h3 className="text-label-sm text-primary mb-4 uppercase tracking-widest">Color Palette</h3>
-            <div className="flex gap-3">
-              <div className="w-6 h-6 rounded-full bg-[#fadadd] border border-rose-200 cursor-pointer hover:scale-110 transition-transform"></div>
-              <div className="w-6 h-6 rounded-full bg-[#fff8f7] border border-rose-200 cursor-pointer hover:scale-110 transition-transform"></div>
-              <div className="w-6 h-6 rounded-full bg-[#e4e3db] border border-rose-200 cursor-pointer hover:scale-110 transition-transform"></div>
-              <div className="w-6 h-6 rounded-full bg-[#e1e1f5] border border-rose-200 cursor-pointer hover:scale-110 transition-transform"></div>
-            </div>
-          </section>
-        </aside>
-
-        {/* Product Grid */}
-        <div className="flex-1">
-          {loading ? (
-            <div className="flex justify-center py-24">
-              <div className="w-8 h-8 border-2 border-rose-200 border-t-rose-400 rounded-full animate-spin"></div>
-            </div>
-          ) : products.length === 0 ? (
-            <div className="text-center py-32 bg-surface-container rounded-[40px]">
-              <h3 className="text-headline-md mb-6 text-primary">No pieces found</h3>
-              <button className="text-label-sm text-rose-400 border-b border-rose-200" onClick={clearFilters}>Reset Collection</button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-12 gap-x-8">
-              {products.map(p => (
-                <div key={p.id} className="group relative bg-white rounded-xl overflow-hidden shadow-soft hover:shadow-xl transition-all duration-500">
-                  <Link to={`/product/${p.id}`} className="block aspect-[4/5] w-full overflow-hidden">
-                    <img 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                      alt={p.name}
-                      src={(() => { try { return getImageUrl(JSON.parse(p.images)[0]); } catch { return ''; } })() || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1920&auto=format&fit=crop"}
-                    />
-                  </Link>
-                  <div className="glass-card absolute bottom-0 left-0 right-0 p-6 m-4 rounded-xl border border-white/40 shadow-sm translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                    <div className="flex justify-between items-start mb-1">
-                      <Link to={`/product/${p.id}`} className="text-headline-md text-lg text-primary hover:text-rose-600 transition-colors">{p.name}</Link>
-                      <span className="text-body-md text-primary font-semibold">${p.price}</span>
-                    </div>
-                    <p className="text-[10px] text-secondary tracking-widest uppercase mb-4">{p.category?.name || 'Collection'}</p>
-                    <button className="w-full py-3 rounded-full bg-primary-container text-on-primary-container text-label-sm uppercase tracking-widest hover:bg-rose-200 transition-colors duration-300">
-                      Add to Bag
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Pagination */}
-          <div className="mt-20 flex justify-center items-center gap-4">
-            <button className="w-12 h-12 rounded-full border border-rose-100 flex items-center justify-center text-rose-300 hover:bg-rose-50 transition-colors duration-300">
-              <span className="material-symbols-outlined">chevron_left</span>
-            </button>
-            <span className="text-label-sm text-primary">1 / 5</span>
-            <button className="w-12 h-12 rounded-full border border-rose-100 flex items-center justify-center text-rose-400 hover:bg-rose-50 transition-colors duration-300">
-              <span className="material-symbols-outlined">chevron_right</span>
-            </button>
+          {/* Search */}
+          <div style={{ position: 'relative', maxWidth: 480 }}>
+            <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--grey-500)' }} />
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="form-input"
+              style={{
+                paddingLeft: 44,
+                background: 'var(--grey-900)',
+                border: '1.5px solid var(--grey-800)',
+                color: 'var(--white)',
+                fontSize: '14px',
+              }}
+            />
           </div>
         </div>
       </div>
-    </main>
+
+      <div className="container" style={{ padding: '32px 24px' }}>
+        {/* Filter bar */}
+        <div style={{
+          display: 'flex',
+          gap: 8,
+          marginBottom: 32,
+          flexWrap: 'wrap',
+          alignItems: 'center',
+        }}>
+          <button
+            className={`btn btn-sm ${!categorySlug && !filter ? 'btn-primary' : 'btn-ghost'}`}
+            onClick={() => clearFilters()}
+          >
+            All
+          </button>
+          <button
+            className={`btn btn-sm ${filter === 'new' ? 'btn-primary' : 'btn-ghost'}`}
+            onClick={() => setFilter('new')}
+          >
+            New In
+          </button>
+          <button
+            className={`btn btn-sm ${filter === 'featured' ? 'btn-primary' : 'btn-ghost'}`}
+            onClick={() => setFilter('featured')}
+          >
+            Featured
+          </button>
+          <div style={{ width: 1, height: 24, background: 'var(--grey-200)', margin: '0 4px' }} />
+          {categories.map(cat => (
+            <button
+              key={cat.id}
+              className={`btn btn-sm ${categorySlug === cat.slug ? 'btn-primary' : 'btn-ghost'}`}
+              onClick={() => setCategory(cat.slug)}
+            >
+              {cat.name}
+            </button>
+          ))}
+          {hasFilters && (
+            <button className="btn btn-sm btn-ghost" onClick={clearFilters} style={{ marginLeft: 'auto', color: 'var(--accent)' }}>
+              <X size={14} /> Clear filters
+            </button>
+          )}
+        </div>
+
+        {/* Results count */}
+        <div style={{ marginBottom: 24, color: 'var(--grey-500)', fontSize: '13px' }}>
+          {loading ? 'Loading...' : `${products.length} products`}
+        </div>
+
+        {/* Grid */}
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '80px 0' }}>
+            <div className="spinner" />
+          </div>
+        ) : products.length === 0 ? (
+          <div className="empty-state">
+            <Search size={48} />
+            <h3 style={{ fontSize: '20px', fontWeight: 600, color: 'var(--grey-600)' }}>No products found</h3>
+            <p>Try adjusting your filters or search terms</p>
+            <button className="btn btn-primary" onClick={clearFilters}>Clear Filters</button>
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 24 }}>
+            {products.map(p => <ProductCard key={p.id} product={p} />)}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
