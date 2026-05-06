@@ -57,7 +57,7 @@ export default function CartPage() {
       <div style={{ paddingTop: 'var(--nav-height)', minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div className="empty-state">
           <ShoppingBag size={64} strokeWidth={1} />
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '40px', letterSpacing: '0.06em', color: 'var(--grey-700)' }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 6vw, 40px)', letterSpacing: '0.06em', color: 'var(--grey-700)' }}>
             YOUR CART IS EMPTY
           </h2>
           <p>Looks like you haven't added anything yet.</p>
@@ -69,29 +69,23 @@ export default function CartPage() {
 
   return (
     <div style={{ paddingTop: 'var(--nav-height)', minHeight: '100vh', background: 'var(--grey-100)' }}>
-      <div className="container" style={{ padding: '48px 24px' }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(40px, 6vw, 72px)', letterSpacing: '0.06em', marginBottom: 40 }}>
+      <div className="container" style={{ padding: 'clamp(32px, 5vw, 48px) 24px' }}>
+        <h1 style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(32px, 6vw, 72px)',
+          letterSpacing: '0.06em',
+          marginBottom: 'clamp(24px, 4vw, 40px)',
+        }}>
           YOUR CART
         </h1>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 32, alignItems: 'start' }}>
+        <div className="cart-grid">
           {/* Cart Items */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {items.map(item => (
-              <div
-                key={`${item.product.id}-${item.size}-${item.color}`}
-                style={{
-                  background: 'var(--white)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '20px',
-                  display: 'flex',
-                  gap: 20,
-                  alignItems: 'center',
-                  boxShadow: 'var(--shadow-sm)',
-                }}
-              >
+              <div key={`${item.product.id}-${item.size}-${item.color}`} className="cart-item">
                 {/* Image */}
-                <div style={{ width: 88, height: 110, borderRadius: 'var(--radius)', overflow: 'hidden', background: 'var(--grey-100)', flexShrink: 0 }}>
+                <div className="cart-item-image">
                   {(() => {
                     const imgs = JSON.parse(item.product.images || '[]');
                     return imgs[0] ? (
@@ -105,7 +99,7 @@ export default function CartPage() {
                 </div>
 
                 {/* Info */}
-                <div style={{ flex: 1 }}>
+                <div className="cart-item-info">
                   <h3 style={{ fontWeight: 600, fontSize: '15px', marginBottom: 4 }}>{item.product.name}</h3>
                   <p style={{ fontSize: '13px', color: 'var(--grey-500)' }}>
                     {item.size} · {item.color}
@@ -116,7 +110,7 @@ export default function CartPage() {
                 </div>
 
                 {/* Qty controls */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 0, border: '1.5px solid var(--grey-200)', borderRadius: 'var(--radius)' }}>
+                <div className="cart-qty-controls">
                   <button
                     onClick={() => updateQuantity(item.product.id, item.size, item.color, item.quantity - 1)}
                     style={{ width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: 'none', border: 'none' }}
@@ -133,7 +127,7 @@ export default function CartPage() {
                 </div>
 
                 {/* Subtotal */}
-                <div style={{ minWidth: 100, textAlign: 'right' }}>
+                <div className="cart-item-subtotal">
                   <p style={{ fontWeight: 700, fontSize: '16px' }}>
                     LKR {(item.product.price * item.quantity).toLocaleString()}
                   </p>
@@ -142,7 +136,7 @@ export default function CartPage() {
                 {/* Remove */}
                 <button
                   onClick={() => removeItem(item.product.id, item.size, item.color)}
-                  style={{ color: 'var(--grey-400)', cursor: 'pointer', background: 'none', border: 'none', padding: 8, borderRadius: 'var(--radius)', transition: 'color 0.2s' }}
+                  style={{ color: 'var(--grey-400)', cursor: 'pointer', background: 'none', border: 'none', padding: 8, borderRadius: 'var(--radius)', transition: 'color 0.2s', flexShrink: 0 }}
                   onMouseEnter={e => (e.currentTarget.style.color = 'var(--error)')}
                   onMouseLeave={e => (e.currentTarget.style.color = 'var(--grey-400)')}
                 >
@@ -153,16 +147,28 @@ export default function CartPage() {
           </div>
 
           {/* Order Summary */}
-          <div style={{ background: 'var(--white)', borderRadius: 'var(--radius-md)', padding: 28, boxShadow: 'var(--shadow-sm)', position: 'sticky', top: 'calc(var(--nav-height) + 24px)' }}>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '28px', letterSpacing: '0.06em', marginBottom: 24 }}>
+          <div style={{
+            background: 'var(--white)',
+            borderRadius: 'var(--radius-md)',
+            padding: 'clamp(20px, 3vw, 28px)',
+            boxShadow: 'var(--shadow-sm)',
+            position: 'sticky',
+            top: 'calc(var(--nav-height) + 24px)',
+          }}>
+            <h2 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(22px, 3vw, 28px)',
+              letterSpacing: '0.06em',
+              marginBottom: 24,
+            }}>
               ORDER SUMMARY
             </h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
               {items.map(item => (
-                <div key={`${item.product.id}-${item.size}-${item.color}`} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: 'var(--grey-600)' }}>
-                  <span>{item.product.name} ×{item.quantity}</span>
-                  <span>LKR {(item.product.price * item.quantity).toLocaleString()}</span>
+                <div key={`${item.product.id}-${item.size}-${item.color}`} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: 'var(--grey-600)', gap: 8 }}>
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0 }}>{item.product.name} ×{item.quantity}</span>
+                  <span style={{ flexShrink: 0 }}>LKR {(item.product.price * item.quantity).toLocaleString()}</span>
                 </div>
               ))}
               <div style={{ borderTop: '1px solid var(--grey-200)', paddingTop: 12, display: 'flex', justifyContent: 'space-between', fontWeight: 700, fontSize: '18px' }}>
@@ -245,12 +251,6 @@ export default function CartPage() {
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 900px) {
-          .cart-layout { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </div>
   );
 }

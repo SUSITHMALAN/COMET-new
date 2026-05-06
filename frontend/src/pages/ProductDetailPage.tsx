@@ -63,9 +63,9 @@ export default function ProductDetailPage() {
 
   return (
     <div style={{ paddingTop: 'var(--nav-height)', minHeight: '100vh' }}>
-      <div className="container" style={{ padding: '40px 24px' }}>
+      <div className="container" style={{ padding: 'clamp(24px, 4vw, 40px) 24px' }}>
         {/* Breadcrumb */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 40, fontSize: '13px', color: 'var(--grey-400)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'clamp(24px, 4vw, 40px)', fontSize: '13px', color: 'var(--grey-400)' }}>
           <Link to="/shop" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
             <ArrowLeft size={14} /> Shop
           </Link>
@@ -73,7 +73,7 @@ export default function ProductDetailPage() {
           <span style={{ color: 'var(--black)' }}>{product.name}</span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'start' }}>
+        <div className="product-detail-grid">
           {/* Images */}
           <div>
             <div style={{
@@ -88,7 +88,7 @@ export default function ProductDetailPage() {
                 <img src={images[imgIndex]} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #f5f5f5, #e5e5e5)' }}>
-                  <span style={{ fontFamily: 'var(--font-display)', fontSize: '72px', color: 'var(--grey-300)' }}>COMET</span>
+                  <span style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(40px, 8vw, 72px)', color: 'var(--grey-300)' }}>COMET</span>
                 </div>
               )}
               {images.length > 1 && (
@@ -105,13 +105,13 @@ export default function ProductDetailPage() {
               )}
             </div>
             {images.length > 1 && (
-              <div style={{ display: 'flex', gap: 8 }}>
+              <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 4 }}>
                 {images.map((img: string, i: number) => (
                   <button key={i} onClick={() => setImgIndex(i)}
                     style={{
                       width: 72, height: 90, borderRadius: 'var(--radius)', overflow: 'hidden',
                       border: i === imgIndex ? '2px solid var(--black)' : '2px solid transparent',
-                      cursor: 'pointer', background: 'none', padding: 0,
+                      cursor: 'pointer', background: 'none', padding: 0, flexShrink: 0,
                     }}>
                     <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </button>
@@ -129,15 +129,15 @@ export default function ProductDetailPage() {
             <p style={{ fontSize: '12px', color: 'var(--grey-400)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>
               {product.category?.name}
             </p>
-            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(32px, 4vw, 48px)', letterSpacing: '0.04em', marginBottom: 20, lineHeight: 1 }}>
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 48px)', letterSpacing: '0.04em', marginBottom: 20, lineHeight: 1 }}>
               {product.name.toUpperCase()}
             </h1>
 
             {/* Price */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32 }}>
-              <span style={{ fontSize: '32px', fontWeight: 700 }}>LKR {product.price.toLocaleString()}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32, flexWrap: 'wrap' }}>
+              <span style={{ fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 700 }}>LKR {product.price.toLocaleString()}</span>
               {product.original_price && (
-                <span style={{ fontSize: '20px', color: 'var(--grey-400)', textDecoration: 'line-through' }}>
+                <span style={{ fontSize: 'clamp(16px, 2vw, 20px)', color: 'var(--grey-400)', textDecoration: 'line-through' }}>
                   LKR {product.original_price.toLocaleString()}
                 </span>
               )}
@@ -260,12 +260,6 @@ export default function ProductDetailPage() {
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 768px) {
-          .product-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </div>
   );
 }
