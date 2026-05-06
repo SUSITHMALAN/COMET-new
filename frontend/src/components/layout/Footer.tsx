@@ -5,11 +5,11 @@ import { Instagram, Twitter, Youtube } from 'lucide-react';
 export default function Footer() {
   return (
     <footer style={{ background: 'var(--black)', color: 'var(--grey-400)', marginTop: 'auto' }}>
-      <div className="container" style={{ padding: '64px 24px 32px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 48, marginBottom: 64 }}>
+      <div className="container" style={{ padding: 'clamp(40px, 6vw, 64px) 24px 32px' }}>
+        <div className="footer-grid">
           {/* Brand */}
           <div>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '40px', letterSpacing: '0.1em', color: 'var(--white)', marginBottom: 12 }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 40px)', letterSpacing: '0.1em', color: 'var(--white)', marginBottom: 12 }}>
               COMET<span style={{ color: 'var(--accent)' }}>.</span>
             </div>
             <p style={{ fontSize: '13px', lineHeight: 1.7, maxWidth: 240 }}>
@@ -77,9 +77,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div style={{ borderTop: '1px solid var(--grey-800)', paddingTop: 32, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+        <div className="footer-bottom">
           <p style={{ fontSize: '12px' }}>© {new Date().getFullYear()} COMET. All rights reserved.</p>
-          <div style={{ display: 'flex', gap: 24, fontSize: '12px' }}>
+          <div className="footer-bottom-links">
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>
             <Link to="/admin/login" style={{ color: 'var(--grey-700)' }}>Admin</Link>

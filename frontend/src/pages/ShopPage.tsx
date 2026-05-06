@@ -73,22 +73,22 @@ export default function ShopPage() {
       {/* Header */}
       <div style={{
         background: 'var(--black)',
-        padding: '60px 0 40px',
+        padding: 'clamp(40px, 6vw, 60px) 0 clamp(28px, 4vw, 40px)',
         borderBottom: '1px solid var(--grey-800)',
       }}>
         <div className="container">
           <h1 style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(48px, 8vw, 96px)',
+            fontSize: 'clamp(36px, 8vw, 96px)',
             letterSpacing: '0.06em',
             color: 'var(--white)',
-            marginBottom: 24,
+            marginBottom: 'clamp(16px, 3vw, 24px)',
           }}>
             {filterLabel.toUpperCase()}
           </h1>
 
           {/* Search */}
-          <div style={{ position: 'relative', maxWidth: 480 }}>
+          <div style={{ position: 'relative', maxWidth: 480, width: '100%' }}>
             <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--grey-500)' }} />
             <input
               type="text"
@@ -108,12 +108,12 @@ export default function ShopPage() {
         </div>
       </div>
 
-      <div className="container" style={{ padding: '32px 24px' }}>
+      <div className="container" style={{ padding: 'clamp(24px, 4vw, 32px) 24px' }}>
         {/* Filter bar */}
         <div style={{
           display: 'flex',
           gap: 8,
-          marginBottom: 32,
+          marginBottom: 'clamp(20px, 3vw, 32px)',
           flexWrap: 'wrap',
           alignItems: 'center',
         }}>
@@ -153,13 +153,13 @@ export default function ShopPage() {
         </div>
 
         {/* Results count */}
-        <div style={{ marginBottom: 24, color: 'var(--grey-500)', fontSize: '13px' }}>
+        <div style={{ marginBottom: 'clamp(16px, 2vw, 24px)', color: 'var(--grey-500)', fontSize: '13px' }}>
           {loading ? 'Loading...' : `${products.length} products`}
         </div>
 
         {/* Grid */}
         {loading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '80px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', padding: 'clamp(48px, 8vw, 80px) 0' }}>
             <div className="spinner" />
           </div>
         ) : products.length === 0 ? (
@@ -170,7 +170,7 @@ export default function ShopPage() {
             <button className="btn btn-primary" onClick={clearFilters}>Clear Filters</button>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 24 }}>
+          <div className="products-grid">
             {products.map(p => <ProductCard key={p.id} product={p} />)}
           </div>
         )}

@@ -18,6 +18,16 @@ export default function Navbar() {
 
   useEffect(() => { setOpen(false); }, [location]);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
   const navLinks = [
     { label: 'Shop', href: '/shop' },
     { label: 'New In', href: '/shop?filter=new' },
@@ -38,10 +48,10 @@ export default function Navbar() {
     }}>
       <div className="container" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {/* Logo */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
           <span style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '28px',
+            fontSize: 'clamp(22px, 3vw, 28px)',
             letterSpacing: '0.12em',
             color: 'var(--white)',
           }}>COMET</span>
@@ -55,7 +65,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav style={{ display: 'flex', gap: 36, alignItems: 'center' }} className="desktop-nav">
+        <nav className="desktop-nav" style={{ gap: 36, alignItems: 'center' }}>
           {navLinks.map(link => (
             <Link
               key={link.href}
@@ -77,7 +87,7 @@ export default function Navbar() {
         </nav>
 
         {/* Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <Link to="/shop" style={{ padding: '8px', color: 'var(--grey-400)', display: 'flex', borderRadius: 'var(--radius)', transition: 'color 0.2s' }}
             onMouseEnter={e => (e.currentTarget.style.color = 'var(--white)')}
             onMouseLeave={e => (e.currentTarget.style.color = 'var(--grey-400)')}>
@@ -119,8 +129,9 @@ export default function Navbar() {
           {/* Mobile menu toggle */}
           <button
             onClick={() => setOpen(!open)}
-            style={{ padding: '8px', color: 'var(--white)', display: 'none' }}
             className="mobile-menu-btn"
+            style={{ padding: '8px', color: 'var(--white)' }}
+            aria-label="Toggle menu"
           >
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -139,6 +150,7 @@ export default function Navbar() {
           flexDirection: 'column',
           gap: 8,
           zIndex: 999,
+          overflowY: 'auto',
         }}>
           {navLinks.map(link => (
             <Link
@@ -146,7 +158,7 @@ export default function Navbar() {
               to={link.href}
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: '36px',
+                fontSize: 'clamp(28px, 8vw, 36px)',
                 letterSpacing: '0.06em',
                 color: 'var(--white)',
                 padding: '8px 0',
@@ -166,13 +178,6 @@ export default function Navbar() {
           )}
         </div>
       )}
-
-      <style>{`
-        @media (max-width: 768px) {
-          .desktop-nav { display: none !important; }
-          .mobile-menu-btn { display: flex !important; }
-        }
-      `}</style>
     </header>
   );
 }
