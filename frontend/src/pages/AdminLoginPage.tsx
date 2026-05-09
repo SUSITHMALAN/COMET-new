@@ -117,10 +117,7 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          <div style={{ marginTop: 24, padding: '16px', background: 'rgba(255,255,255,0.04)', borderRadius: 'var(--radius)', fontSize: '12px', color: 'var(--grey-500)' }}>
-            <strong style={{ color: 'var(--grey-400)' }}>Default credentials:</strong><br />
-            admin@comet.com / admin123
-          </div>
+
         </div>
       </div>
     </div>
