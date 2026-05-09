@@ -82,7 +82,14 @@ export default function Footer() {
           <div className="footer-bottom-links">
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>
-            <Link to="/admin/login" style={{ color: 'var(--grey-700)' }}>Admin</Link>
+            <Link 
+              to="/admin/login" 
+              style={{ color: 'var(--grey-500)', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--white)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--grey-500)')}
+            >
+              Admin
+            </Link>
           </div>
         </div>
       </div>

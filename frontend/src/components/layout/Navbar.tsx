@@ -94,13 +94,15 @@ export default function Navbar() {
             <Search size={20} />
           </Link>
 
-          {user && (
-            <Link to={user.role === 'admin' ? '/admin' : '/account'} style={{ padding: '8px', color: 'var(--grey-400)', display: 'flex', borderRadius: 'var(--radius)', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--white)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--grey-400)')}>
-              <User size={20} />
-            </Link>
-          )}
+          <Link 
+            to={user ? (user.role === 'admin' ? '/admin' : '/account') : '/admin/login'} 
+            style={{ padding: '8px', color: 'var(--grey-400)', display: 'flex', borderRadius: 'var(--radius)', transition: 'color 0.2s' }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'var(--white)')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'var(--grey-400)')}
+            title={user ? 'Account' : 'Admin Login'}
+          >
+            <User size={20} />
+          </Link>
 
           <Link
             to="/cart"
